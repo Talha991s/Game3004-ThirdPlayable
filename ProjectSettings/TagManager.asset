@@ -13,6 +13,7 @@ TagManager:
   - Enemy
   - WinScene
   - SuperSeed
+  - Bullet
   layers:
   - Default
   - TransparentFX
