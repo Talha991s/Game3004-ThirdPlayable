@@ -51,7 +51,7 @@ public class SaveFileManager : MonoBehaviour {
     [SerializeField] private bool loadButton = false;                   //TODO Remove. This is only used during development to test savefile loading.
 
     private string[] availableSaveFiles = new string[9];                //Note: This game will have a maximum 8 save slots hardcoded.
-    private SaveData loadedSaveData;                                    //Initial save data being used
+    //private SaveData loadedSaveData;                                    //Initial save data being used
     private string gameVersion = "0.1";
 
     //TODO Remove. This is only used during development to test
@@ -72,27 +72,20 @@ public class SaveFileManager : MonoBehaviour {
     }
 
     public void QuickSave() {
-        loadedSaveData = new SaveData();
-        loadedSaveData.savefileHeader = "(Quicksave) Marco    Lives: " + loadedSaveData.livesAmount + "; Ammo: " + loadedSaveData.ammoAmount + "; Seeds: " + loadedSaveData.seedsCollected + "; Levels Unlocked: " + loadedSaveData.levelsUnlocked;
-        loadedSaveData.gameVersion = this.gameVersion;
+        SaveData newSaveData = new SaveData();
+        newSaveData.savefileHeader = "(Quicksave) Marco    Lives: " + newSaveData.livesAmount + "; Ammo: " + newSaveData.ammoAmount + "; Seeds: " + newSaveData.seedsCollected + "; Levels Unlocked: " + newSaveData.levelsUnlocked;
+        newSaveData.gameVersion = this.gameVersion;
 
-        loadedSaveData.playerCoord = new TransformLite(playerCharacterRef.position.x, playerCharacterRef.position.y, playerCharacterRef.position.z, playerCharacterRef.eulerAngles.x, playerCharacterRef.eulerAngles.y,playerCharacterRef.eulerAngles.z);
+        newSaveData.playerCoord = new TransformLite(playerCharacterRef.position.x, playerCharacterRef.position.y, playerCharacterRef.position.z, playerCharacterRef.eulerAngles.x, playerCharacterRef.eulerAngles.y,playerCharacterRef.eulerAngles.z);
 
-        //loadedSaveData.playerLocationX = this.playerLocation.x;
-        //loadedSaveData.playerLocationY = this.playerLocation.y;
-        //loadedSaveData.playerLocationZ = this.playerLocation.z;
-        //loadedSaveData.playerOrientationX = this.playerOrientation.x;
-        //loadedSaveData.playerOrientationY = this.playerOrientation.y;
-        //loadedSaveData.playerOrientationZ = this.playerOrientation.z;
+        newSaveData.livesAmount = this.livesAmount;
+        newSaveData.ammoAmount = this.ammoAmount;
+        newSaveData.seedsCollected = this.seedsCollected;
+        newSaveData.aliensKilled = this.aliensKilled;
+        newSaveData.currentLevel = this.currentLevel; //0 means not in a level
+        newSaveData.levelsUnlocked = this.levelsUnlocked;
 
-        loadedSaveData.livesAmount = this.livesAmount;
-        loadedSaveData.ammoAmount = this.ammoAmount;
-        loadedSaveData.seedsCollected = this.seedsCollected;
-        loadedSaveData.aliensKilled = this.aliensKilled;
-        loadedSaveData.currentLevel = this.currentLevel; //0 means not in a level
-        loadedSaveData.levelsUnlocked = this.levelsUnlocked;
-
-        SaveFileReaderWriter.WriteToSaveFile(Application.persistentDataPath + "/" + savefileName + "0.hamsave", loadedSaveData);
+        SaveFileReaderWriter.WriteToSaveFile(Application.persistentDataPath + "/" + savefileName + "0.hamsave", newSaveData);
     }
 
     //Saves game data at given save slot index
@@ -103,27 +96,20 @@ public class SaveFileManager : MonoBehaviour {
             return;
         }
 
-        loadedSaveData = new SaveData();
-        loadedSaveData.savefileHeader = "Marco    Lives: " + loadedSaveData.livesAmount + "; Ammo: " + loadedSaveData.ammoAmount + "; Seeds: " + loadedSaveData.seedsCollected + "; Levels Unlocked: " + loadedSaveData.levelsUnlocked;
-        loadedSaveData.gameVersion = this.gameVersion;
+        SaveData newSaveData = new SaveData();
+        newSaveData.savefileHeader = "Marco    Lives: " + newSaveData.livesAmount + "; Ammo: " + newSaveData.ammoAmount + "; Seeds: " + newSaveData.seedsCollected + "; Levels Unlocked: " + newSaveData.levelsUnlocked;
+        newSaveData.gameVersion = this.gameVersion;
 
-        loadedSaveData.playerCoord = new TransformLite(playerCharacterRef.position.x, playerCharacterRef.position.y, playerCharacterRef.position.z, playerCharacterRef.eulerAngles.x, playerCharacterRef.eulerAngles.y,playerCharacterRef.eulerAngles.z);
+        newSaveData.playerCoord = new TransformLite(playerCharacterRef.position.x, playerCharacterRef.position.y, playerCharacterRef.position.z, playerCharacterRef.eulerAngles.x, playerCharacterRef.eulerAngles.y,playerCharacterRef.eulerAngles.z);
 
-        //loadedSaveData.playerLocationX = this.playerLocation.x;
-        //loadedSaveData.playerLocationY = this.playerLocation.y;
-        //loadedSaveData.playerLocationZ = this.playerLocation.z;
-        //loadedSaveData.playerOrientationX = this.playerOrientation.x;
-        //loadedSaveData.playerOrientationY = this.playerOrientation.y;
-        //loadedSaveData.playerOrientationZ = this.playerOrientation.z;
+        newSaveData.livesAmount = this.livesAmount;
+        newSaveData.ammoAmount = this.ammoAmount;
+        newSaveData.seedsCollected = this.seedsCollected;
+        newSaveData.aliensKilled = this.aliensKilled;
+        newSaveData.currentLevel = this.currentLevel; //0 means not in a level
+        newSaveData.levelsUnlocked = this.levelsUnlocked;
 
-        loadedSaveData.livesAmount = this.livesAmount;
-        loadedSaveData.ammoAmount = this.ammoAmount;
-        loadedSaveData.seedsCollected = this.seedsCollected;
-        loadedSaveData.aliensKilled = this.aliensKilled;
-        loadedSaveData.currentLevel = this.currentLevel; //0 means not in a level
-        loadedSaveData.levelsUnlocked = this.levelsUnlocked;
-
-        SaveFileReaderWriter.WriteToSaveFile(Application.persistentDataPath + "/" + savefileName + _saveSlotIndex + ".hamsave", loadedSaveData);
+        SaveFileReaderWriter.WriteToSaveFile(Application.persistentDataPath + "/" + savefileName + _saveSlotIndex + ".hamsave", newSaveData);
     }
 
     //Saves given game data at given save slot index
@@ -153,39 +139,39 @@ public class SaveFileManager : MonoBehaviour {
             return null;
         }
 
-        loadedSaveData = SaveFileReaderWriter.ReadFromSaveFile(Application.persistentDataPath + "/" + savefileName + _saveSlotIndex + ".hamsave"); 
+        LoadedSaveFile.loadedSaveData = SaveFileReaderWriter.ReadFromSaveFile(Application.persistentDataPath + "/" + savefileName + _saveSlotIndex + ".hamsave"); 
 
-        if (this.gameVersion != loadedSaveData.gameVersion) {
+        if (this.gameVersion != LoadedSaveFile.loadedSaveData.gameVersion) {
             Debug.LogWarning("[Warning] Cannot load save file; incompatible version. ");
             return null;
         }
 
         //TODO Temp: Display in inspector
-        this.showOpenSaveHeader = loadedSaveData.savefileHeader;
-        this.showPlayerLocation = new Vector3(loadedSaveData.playerCoord.positionX, loadedSaveData.playerCoord.positionY, loadedSaveData.playerCoord.positionZ);
-        this.showPlayerOrientation = new Vector3(loadedSaveData.playerCoord.orientationX, loadedSaveData.playerCoord.orientationY, loadedSaveData.playerCoord.orientationZ);
-        this.showHealthAmount = loadedSaveData.healthAmount;
-        this.showLivesAmount = loadedSaveData.livesAmount;
-        this.showAmmoAmount = loadedSaveData.ammoAmount;
-        this.showSeedsCollected = loadedSaveData.seedsCollected;
-        this.showAliensKilled = loadedSaveData.aliensKilled;
-        this.showCurrentLevel = loadedSaveData.currentLevel; //0 means not in a level
-        this.showLevelsUnlocked = loadedSaveData.levelsUnlocked;
+        this.showOpenSaveHeader = LoadedSaveFile.loadedSaveData.savefileHeader;
+        this.showPlayerLocation = new Vector3(LoadedSaveFile.loadedSaveData.playerCoord.positionX, LoadedSaveFile.loadedSaveData.playerCoord.positionY, LoadedSaveFile.loadedSaveData.playerCoord.positionZ);
+        this.showPlayerOrientation = new Vector3(LoadedSaveFile.loadedSaveData.playerCoord.orientationX, LoadedSaveFile.loadedSaveData.playerCoord.orientationY, LoadedSaveFile.loadedSaveData.playerCoord.orientationZ);
+        this.showHealthAmount = LoadedSaveFile.loadedSaveData.healthAmount;
+        this.showLivesAmount = LoadedSaveFile.loadedSaveData.livesAmount;
+        this.showAmmoAmount = LoadedSaveFile.loadedSaveData.ammoAmount;
+        this.showSeedsCollected = LoadedSaveFile.loadedSaveData.seedsCollected;
+        this.showAliensKilled = LoadedSaveFile.loadedSaveData.aliensKilled;
+        this.showCurrentLevel = LoadedSaveFile.loadedSaveData.currentLevel; //0 means not in a level
+        this.showLevelsUnlocked = LoadedSaveFile.loadedSaveData.levelsUnlocked;
 
-        return loadedSaveData;
+        return LoadedSaveFile.loadedSaveData;
     }
 
     //TODO Untested
     //Returns the loaded SaveData File.
     public SaveData GetSaveData() 
     {
-        if (loadedSaveData == null) 
+        if (LoadedSaveFile.loadedSaveData == null) 
         {
             Debug.LogError("[Error] No save data loaded yet; returning SaveData with default properties.");
             return new SaveData();
         }
 
-        return loadedSaveData;
+        return LoadedSaveFile.loadedSaveData;
     }
 
     //TODO Untested
