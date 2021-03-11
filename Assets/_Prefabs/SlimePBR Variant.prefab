@@ -93,7 +93,7 @@ MonoBehaviour:
   poof: {fileID: 5808841620909367894, guid: 5640e200d295ad9419800e6165ccbd4d, type: 3}
   BaseHP: 1
   hp: 0
-  deathTime: 0.5
+  deathTime: 0.8
 --- !u!1001 &6677261698285605616
 PrefabInstance:
   m_ObjectHideFlags: 0

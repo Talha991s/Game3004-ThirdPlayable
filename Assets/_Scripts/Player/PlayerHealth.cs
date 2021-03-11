@@ -27,6 +27,7 @@ public class PlayerHealth : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (currentHealth == 0)
         {
            // FindObjectOfType<SoundManager>().Play("dead");
@@ -58,7 +59,6 @@ public class PlayerHealth : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             FindObjectOfType<SoundManager>().Play("Attacked");
-
             TakeDamage(5);
         }
     }

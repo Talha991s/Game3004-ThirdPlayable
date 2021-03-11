@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4361873445752240901}
   - component: {fileID: 5454152061551945028}
   - component: {fileID: 3818551905501766435}
+  - component: {fileID: 2423518349460324376}
   - component: {fileID: 2671475623050413805}
   m_Layer: 0
   m_Name: Laser
@@ -97,6 +98,22 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &2423518349460324376
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 349998351260724643}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!114 &2671475623050413805
 MonoBehaviour:
   m_ObjectHideFlags: 0

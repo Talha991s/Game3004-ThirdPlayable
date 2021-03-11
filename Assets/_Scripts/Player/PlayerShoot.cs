@@ -17,9 +17,9 @@ public class PlayerShoot : MonoBehaviour
         if(Input.GetMouseButtonDown(0))
         {
             anim.SetTrigger("Shoot");
-            GameObject b = Instantiate(bullet);
-            b.transform.position = transform.position;
-            b.GetComponent<LazerScript>().direction = gameObject.transform.forward;
+            Vector3 offset = transform.forward * 0.3f;
+            GameObject b = Instantiate(bullet, transform.position + offset, new Quaternion(0,0,0,0));
+            b.GetComponent<LazerScript>().direction = transform.forward;
         }
     }
 }

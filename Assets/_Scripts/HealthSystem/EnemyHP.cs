@@ -37,7 +37,7 @@ public class EnemyHP : MonoBehaviour
         if(other.tag == "Bullet")
         {
             TakeDamage();
-            Debug.Log(gameObject.name + " HIT. HP is now " + hp);
+            //Debug.Log(gameObject.name + " HIT. HP is now " + hp);
             Destroy(other.gameObject);
         }
     }
