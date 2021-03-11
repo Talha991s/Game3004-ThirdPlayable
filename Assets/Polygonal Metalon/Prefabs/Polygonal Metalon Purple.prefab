@@ -904,7 +904,7 @@ MonoBehaviour:
   poof: {fileID: 5808841620909367894, guid: 5640e200d295ad9419800e6165ccbd4d, type: 3}
   BaseHP: 2
   hp: 0
-  deathTime: 0.5
+  deathTime: 0.8
 --- !u!1 &1486048802852170
 GameObject:
   m_ObjectHideFlags: 0

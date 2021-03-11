@@ -42,10 +42,13 @@ public class SeedScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider col)
     {
-        //When player steps in seeds trigger, add seed worth to players count and destroy seed.
-        invScreen.GetComponent<PlayerInventory>().CollectSeed(seedWorth);
-        if( invScreen.GetComponent<PlayerInventory>().CollectItem(itemName)){ //if item was collected destroy it
-            Destroy(gameObject);
+        if (col.gameObject.tag == "Player")
+        {
+            invScreen.GetComponent<PlayerInventory>().CollectSeed(seedWorth);
+            if (invScreen.GetComponent<PlayerInventory>().CollectItem(itemName))
+            { //if item was collected destroy it
+                Destroy(gameObject);
+            }
         }
     }
 }
