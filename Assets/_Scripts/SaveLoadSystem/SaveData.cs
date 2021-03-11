@@ -14,13 +14,15 @@ public class SaveData
 {
     public string savefileHeader; //The save file header seen in-game view. This is different from the save file name.
     public string gameVersion;
-    public float playerLocationX;
-    public float playerLocationY;
-    public float playerLocationZ;
-    public float playerOrientationX;
-    public float playerOrientationY;
-    public float playerOrientationZ;
 
+    public TransformLite playerCoord;
+
+    //Note: Count must be checked before use
+    public TransformLite[] mobCoord;
+    public TransformLite[] platformCoord;
+    public TransformLite[] pickupCoord;
+
+    public int healthAmount;
     public int livesAmount;
     public int ammoAmount;
     public int seedsCollected;
@@ -28,18 +30,14 @@ public class SaveData
     public int currentLevel; //0 means not in a level
     public int levelsUnlocked;
 
-    public SaveData() 
-    {
+    public SaveData() {
         //These are default values that SHOULD be replaced upon instantiation
         savefileHeader = "default header";
         gameVersion = "undefined";
-        playerLocationX = 0;
-        playerLocationY = 0;
-        playerLocationZ = 0;
-        playerOrientationX = 0;
-        playerOrientationY = 0;
-        playerOrientationZ = 0;
 
+        playerCoord = new TransformLite(0, 0, 0, 0, 0, 0);
+
+        healthAmount = 100;
         livesAmount = 3;
         ammoAmount = 100;
         seedsCollected = 0;
@@ -48,23 +46,59 @@ public class SaveData
         levelsUnlocked = 1;
     }
 
-    public SaveData(string _insertFileName, string _insertGameVersion, float _insertPositionX, float _insertPositionY, float _insertPositionZ, float _insertRotationX, float _insertRotationY, float _insertRotationZ,
-                    int _insertLivesAmount, int _insertAmmoAmount, int _insertSeedsCollected, int _insertAliensKilled, int _insertCurrentLevel, int _insertLevelsUnlocked)
-    {
-        savefileHeader = _insertFileName;
-        gameVersion = _insertGameVersion;
-        playerLocationX = _insertPositionX;
-        playerLocationY = _insertPositionY;
-        playerLocationZ = _insertPositionZ;
-        playerOrientationX = _insertRotationX;
-        playerOrientationY = _insertRotationY;
-        playerOrientationZ = _insertRotationZ;
+    //public string savefileHeader; //The save file header seen in-game view. This is different from the save file name.
+    //public string gameVersion;
+    //public float playerLocationX;
+    //public float playerLocationY;
+    //public float playerLocationZ;
+    //public float playerOrientationX;
+    //public float playerOrientationY;
+    //public float playerOrientationZ;
 
-        livesAmount = _insertLivesAmount;
-        ammoAmount = _insertAmmoAmount;
-        seedsCollected = _insertSeedsCollected;
-        aliensKilled = _insertAliensKilled;
-        currentLevel = _insertCurrentLevel; //0 means not in a level
-        levelsUnlocked = _insertLevelsUnlocked;
-    }
+    //public int livesAmount;
+    //public int ammoAmount;
+    //public int seedsCollected;
+    //public int aliensKilled;
+    //public int currentLevel; //0 means not in a level
+    //public int levelsUnlocked;
+
+    //public SaveData() 
+    //{
+    //    //These are default values that SHOULD be replaced upon instantiation
+    //    savefileHeader = "default header";
+    //    gameVersion = "undefined";
+    //    playerLocationX = 0;
+    //    playerLocationY = 0;
+    //    playerLocationZ = 0;
+    //    playerOrientationX = 0;
+    //    playerOrientationY = 0;
+    //    playerOrientationZ = 0;
+
+    //    livesAmount = 3;
+    //    ammoAmount = 100;
+    //    seedsCollected = 0;
+    //    aliensKilled = 0;
+    //    currentLevel = 0; //0 means not in a level
+    //    levelsUnlocked = 1;
+    //}
+
+    //public SaveData(string _insertFileName, string _insertGameVersion, float _insertPositionX, float _insertPositionY, float _insertPositionZ, float _insertRotationX, float _insertRotationY, float _insertRotationZ,
+    //                int _insertLivesAmount, int _insertAmmoAmount, int _insertSeedsCollected, int _insertAliensKilled, int _insertCurrentLevel, int _insertLevelsUnlocked)
+    //{
+    //    savefileHeader = _insertFileName;
+    //    gameVersion = _insertGameVersion;
+    //    playerLocationX = _insertPositionX;
+    //    playerLocationY = _insertPositionY;
+    //    playerLocationZ = _insertPositionZ;
+    //    playerOrientationX = _insertRotationX;
+    //    playerOrientationY = _insertRotationY;
+    //    playerOrientationZ = _insertRotationZ;
+
+    //    livesAmount = _insertLivesAmount;
+    //    ammoAmount = _insertAmmoAmount;
+    //    seedsCollected = _insertSeedsCollected;
+    //    aliensKilled = _insertAliensKilled;
+    //    currentLevel = _insertCurrentLevel; //0 means not in a level
+    //    levelsUnlocked = _insertLevelsUnlocked;
+    //}
 }

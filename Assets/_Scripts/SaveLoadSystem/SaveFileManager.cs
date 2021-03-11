@@ -1,6 +1,6 @@
 /*  Author: Joseph Malibiran
  *  Date Created: January 28, 2021
- *  Last Updated: January 29, 2021
+ *  Last Updated: March 11, 2021
  *  Description: Manages and also retains information regarding the loaded save files and all available save files. 
  *  
  */
@@ -11,14 +11,34 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SaveFileManager : MonoBehaviour {
+
+    [Header("References")]
+    //[SerializeField] private TransformTrackerScr trackerRef;
+    [SerializeField] private Transform playerCharacterRef;
+    [SerializeField] private Transform[] mobRefs;
+    [SerializeField] private Transform[] platformRefs;
+    [SerializeField] private Transform[] pickupRefs;
+
     [Header("Settings")]
     [SerializeField] private string savefileName = "Hamstronaut";       //This is the name of the save file. An indexing number will be appended to this name. This is different from the save file header seen in-game.
 
+    [Header("Temp Debug Read-Only")] 
+    [SerializeField] private Vector3 showPlayerLocation = Vector3.zero;
+    [SerializeField] private Vector3 showPlayerOrientation = Vector3.zero;
+    [SerializeField] private string showOpenSaveHeader = "";
+
+    [SerializeField] private int showHealthAmount;
+    [SerializeField] private int showLivesAmount;
+    [SerializeField] private int showAmmoAmount;
+    [SerializeField] private int showSeedsCollected;
+    [SerializeField] private int showAliensKilled;
+    [SerializeField] private int showCurrentLevel;                      //0 means not in a level
+    [SerializeField] private int showLevelsUnlocked;
+
     [Header("Temp Settings")]                                           //TODO Remove. Most of these properties are just here for development use and testing; they have no use on final product.
-    [SerializeField] private string savefileHeader = ""; 
-    [SerializeField] private Vector3 playerLocation = Vector3.zero;
-    [SerializeField] private Vector3 playerOrientation = Vector3.zero;
-    [SerializeField] private int livesAmount = 3;
+    //[SerializeField] private string savefileHeader = ""; 
+    //[SerializeField] private int livesAmount = 3;
+    [SerializeField] private int livesAmount = 100;
     [SerializeField] private int ammoAmount = 100;
     [SerializeField] private int seedsCollected = 0;
     [SerializeField] private int aliensKilled = 0;
@@ -55,12 +75,15 @@ public class SaveFileManager : MonoBehaviour {
         loadedSaveData = new SaveData();
         loadedSaveData.savefileHeader = "(Quicksave) Marco    Lives: " + loadedSaveData.livesAmount + "; Ammo: " + loadedSaveData.ammoAmount + "; Seeds: " + loadedSaveData.seedsCollected + "; Levels Unlocked: " + loadedSaveData.levelsUnlocked;
         loadedSaveData.gameVersion = this.gameVersion;
-        loadedSaveData.playerLocationX = this.playerLocation.x;
-        loadedSaveData.playerLocationY = this.playerLocation.y;
-        loadedSaveData.playerLocationZ = this.playerLocation.z;
-        loadedSaveData.playerOrientationX = this.playerOrientation.x;
-        loadedSaveData.playerOrientationY = this.playerOrientation.y;
-        loadedSaveData.playerOrientationZ = this.playerOrientation.z;
+
+        loadedSaveData.playerCoord = new TransformLite(playerCharacterRef.position.x, playerCharacterRef.position.y, playerCharacterRef.position.z, playerCharacterRef.eulerAngles.x, playerCharacterRef.eulerAngles.y,playerCharacterRef.eulerAngles.z);
+
+        //loadedSaveData.playerLocationX = this.playerLocation.x;
+        //loadedSaveData.playerLocationY = this.playerLocation.y;
+        //loadedSaveData.playerLocationZ = this.playerLocation.z;
+        //loadedSaveData.playerOrientationX = this.playerOrientation.x;
+        //loadedSaveData.playerOrientationY = this.playerOrientation.y;
+        //loadedSaveData.playerOrientationZ = this.playerOrientation.z;
 
         loadedSaveData.livesAmount = this.livesAmount;
         loadedSaveData.ammoAmount = this.ammoAmount;
@@ -83,12 +106,15 @@ public class SaveFileManager : MonoBehaviour {
         loadedSaveData = new SaveData();
         loadedSaveData.savefileHeader = "Marco    Lives: " + loadedSaveData.livesAmount + "; Ammo: " + loadedSaveData.ammoAmount + "; Seeds: " + loadedSaveData.seedsCollected + "; Levels Unlocked: " + loadedSaveData.levelsUnlocked;
         loadedSaveData.gameVersion = this.gameVersion;
-        loadedSaveData.playerLocationX = this.playerLocation.x;
-        loadedSaveData.playerLocationY = this.playerLocation.y;
-        loadedSaveData.playerLocationZ = this.playerLocation.z;
-        loadedSaveData.playerOrientationX = this.playerOrientation.x;
-        loadedSaveData.playerOrientationY = this.playerOrientation.y;
-        loadedSaveData.playerOrientationZ = this.playerOrientation.z;
+
+        loadedSaveData.playerCoord = new TransformLite(playerCharacterRef.position.x, playerCharacterRef.position.y, playerCharacterRef.position.z, playerCharacterRef.eulerAngles.x, playerCharacterRef.eulerAngles.y,playerCharacterRef.eulerAngles.z);
+
+        //loadedSaveData.playerLocationX = this.playerLocation.x;
+        //loadedSaveData.playerLocationY = this.playerLocation.y;
+        //loadedSaveData.playerLocationZ = this.playerLocation.z;
+        //loadedSaveData.playerOrientationX = this.playerOrientation.x;
+        //loadedSaveData.playerOrientationY = this.playerOrientation.y;
+        //loadedSaveData.playerOrientationZ = this.playerOrientation.z;
 
         loadedSaveData.livesAmount = this.livesAmount;
         loadedSaveData.ammoAmount = this.ammoAmount;
@@ -134,15 +160,17 @@ public class SaveFileManager : MonoBehaviour {
             return null;
         }
 
-        this.savefileHeader = loadedSaveData.savefileHeader;
-        this.playerLocation = new Vector3(loadedSaveData.playerLocationX, loadedSaveData.playerLocationY, loadedSaveData.playerLocationZ);
-        this.playerOrientation = new Vector3(loadedSaveData.playerOrientationX, loadedSaveData.playerOrientationY, loadedSaveData.playerOrientationZ);
-        this.livesAmount = loadedSaveData.livesAmount;
-        this.ammoAmount = loadedSaveData.ammoAmount;
-        this.seedsCollected = loadedSaveData.seedsCollected;
-        this.aliensKilled = loadedSaveData.aliensKilled;
-        this.currentLevel = loadedSaveData.currentLevel; //0 means not in a level
-        this.levelsUnlocked = loadedSaveData.levelsUnlocked;
+        //TODO Temp: Display in inspector
+        this.showOpenSaveHeader = loadedSaveData.savefileHeader;
+        this.showPlayerLocation = new Vector3(loadedSaveData.playerCoord.positionX, loadedSaveData.playerCoord.positionY, loadedSaveData.playerCoord.positionZ);
+        this.showPlayerOrientation = new Vector3(loadedSaveData.playerCoord.orientationX, loadedSaveData.playerCoord.orientationY, loadedSaveData.playerCoord.orientationZ);
+        this.showHealthAmount = loadedSaveData.healthAmount;
+        this.showLivesAmount = loadedSaveData.livesAmount;
+        this.showAmmoAmount = loadedSaveData.ammoAmount;
+        this.showSeedsCollected = loadedSaveData.seedsCollected;
+        this.showAliensKilled = loadedSaveData.aliensKilled;
+        this.showCurrentLevel = loadedSaveData.currentLevel; //0 means not in a level
+        this.showLevelsUnlocked = loadedSaveData.levelsUnlocked;
 
         return loadedSaveData;
     }

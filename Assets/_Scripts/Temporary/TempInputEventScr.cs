@@ -63,12 +63,14 @@ public class TempInputEventScr : MonoBehaviour
             {
                 //Activate Quick Save here
                 SaveData newSave = new SaveData();
-                newSave.playerLocationX = playerCharRef.position.x;
-                newSave.playerLocationY = playerCharRef.position.y;
-                newSave.playerLocationZ = playerCharRef.position.z;
-                newSave.playerOrientationX = playerCharRef.localEulerAngles.x;
-                newSave.playerOrientationY = playerCharRef.localEulerAngles.y;
-                newSave.playerOrientationZ = playerCharRef.localEulerAngles.z;
+                newSave.playerCoord = new TransformLite(playerCharRef.position.x, playerCharRef.position.y, playerCharRef.position.z, playerCharRef.localEulerAngles.x, playerCharRef.localEulerAngles.y, playerCharRef.localEulerAngles.z);
+
+                //newSave.playerLocationX = playerCharRef.position.x;
+                //newSave.playerLocationY = playerCharRef.position.y;
+                //newSave.playerLocationZ = playerCharRef.position.z;
+                //newSave.playerOrientationX = playerCharRef.localEulerAngles.x;
+                //newSave.playerOrientationY = playerCharRef.localEulerAngles.y;
+                //newSave.playerOrientationZ = playerCharRef.localEulerAngles.z;
                 saveManager.SaveGame(1, newSave);
             } 
         }
