@@ -63,5 +63,4 @@ public class SimplePausingScr : MonoBehaviour
         }
         return false;
     }
-
 }

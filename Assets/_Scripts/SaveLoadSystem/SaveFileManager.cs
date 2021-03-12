@@ -9,15 +9,16 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SaveFileManager : MonoBehaviour {
 
     [Header("References")]
-    //[SerializeField] private TransformTrackerScr trackerRef;
+    [SerializeField] private LoadGameFromSaveScr gameLoaderRef;
     [SerializeField] private Transform playerCharacterRef;
-    [SerializeField] private Transform[] mobRefs;
-    [SerializeField] private Transform[] platformRefs;
-    [SerializeField] private Transform[] pickupRefs;
+    [SerializeField] private Transform[] mobsPresentInScene;
+    [SerializeField] private Transform[] platformsPresentInScene;
+    [SerializeField] private Transform[] pickupsPresentInScene;
 
     [Header("Settings")]
     [SerializeField] private string savefileName = "Hamstronaut";       //This is the name of the save file. An indexing number will be appended to this name. This is different from the save file header seen in-game.
@@ -52,7 +53,16 @@ public class SaveFileManager : MonoBehaviour {
 
     private string[] availableSaveFiles = new string[9];                //Note: This game will have a maximum 8 save slots hardcoded.
     //private SaveData loadedSaveData;                                    //Initial save data being used
-    private string gameVersion = "0.1";
+    private string gameVersion = "0.3";
+
+    private void Awake() 
+    {
+        if (LoadedSaveFile.loadLevelBasedOnSaveFile == true) 
+        {
+            LoadedSaveFile.loadLevelBasedOnSaveFile = false;
+            LoadGameFromSelectedSaveFile();
+        }
+    }
 
     //TODO Remove. This is only used during development to test
     private void Update() 
@@ -71,7 +81,8 @@ public class SaveFileManager : MonoBehaviour {
         }
     }
 
-    public void QuickSave() {
+    public void QuickSave() 
+    {
         SaveData newSaveData = new SaveData();
         newSaveData.savefileHeader = "(Quicksave) Marco    Lives: " + newSaveData.livesAmount + "; Ammo: " + newSaveData.ammoAmount + "; Seeds: " + newSaveData.seedsCollected + "; Levels Unlocked: " + newSaveData.levelsUnlocked;
         newSaveData.gameVersion = this.gameVersion;
@@ -115,7 +126,9 @@ public class SaveFileManager : MonoBehaviour {
     //Saves given game data at given save slot index
     public void SaveGame(int _saveSlotIndex, SaveData _saveData) 
     {
-        if (_saveSlotIndex <= 0 || _saveSlotIndex > 8) { //This game will have a maximum 8 save slots hardcoded.
+        //This game will have a maximum 8 save slots hardcoded.
+        if (_saveSlotIndex <= 0 || _saveSlotIndex > 8) 
+        { 
             Debug.LogError("[Error] Invalid save slot index! Slot number must be between from 1 to 8.");
             return;
         }
@@ -129,22 +142,28 @@ public class SaveFileManager : MonoBehaviour {
     //Loads save file data at given save slot index
     public SaveData LoadGame(int _saveSlotIndex) 
     {
-        if (_saveSlotIndex < 0 || _saveSlotIndex > 8) { //This game will have a maximum 8 save slots hardcoded.
+        //This game will have a maximum 8 save slots hardcoded.
+        if (_saveSlotIndex < 0 || _saveSlotIndex > 8) 
+        { 
             Debug.LogError("[Error] Invalid save slot index! Slot number must be between from 0 to 8.");
             return null;
         }
 
-        if (!File.Exists(Application.persistentDataPath + "/" + savefileName + _saveSlotIndex + ".hamsave")) {
+        if (!File.Exists(Application.persistentDataPath + "/" + savefileName + _saveSlotIndex + ".hamsave")) 
+        {
             Debug.LogError("[Error] File does not exist; Cannot load a save file that does not exist.");
             return null;
         }
 
-        LoadedSaveFile.loadedSaveData = SaveFileReaderWriter.ReadFromSaveFile(Application.persistentDataPath + "/" + savefileName + _saveSlotIndex + ".hamsave"); 
+        SaveData readSaveData = SaveFileReaderWriter.ReadFromSaveFile(Application.persistentDataPath + "/" + savefileName + _saveSlotIndex + ".hamsave");
 
-        if (this.gameVersion != LoadedSaveFile.loadedSaveData.gameVersion) {
+        if (this.gameVersion != readSaveData.gameVersion) 
+        {
             Debug.LogWarning("[Warning] Cannot load save file; incompatible version. ");
             return null;
         }
+
+        LoadedSaveFile.loadedSaveData = readSaveData;
 
         //TODO Temp: Display in inspector
         this.showOpenSaveHeader = LoadedSaveFile.loadedSaveData.savefileHeader;
@@ -207,5 +226,68 @@ public class SaveFileManager : MonoBehaviour {
         }
 
         return availableSaveFiles[_saveSlotIndex - 1];
+    }
+
+    public void LoadGameFromSelectedSaveFile() 
+    {
+        //Check Loaded Save File
+        if (LoadedSaveFile.loadedSaveData == null)
+        {
+            Debug.LogError("[Error] Could not load save file.");
+            return;
+        }
+
+        //Check if current scene matches save file level
+        if (LoadedSaveFile.loadedSaveData.currentLevel == 1) {
+            if (SceneManager.GetActiveScene().buildIndex != 1) {
+                Debug.LogError("[Error] Save file level data mismatch.");
+                return;
+            }
+        }
+
+        StartCoroutine(LoadGameStateRoutine());
+
+    }
+
+    IEnumerator LoadGameStateRoutine() 
+    {
+        Time.timeScale = 0;
+
+        //Set up level if applicable
+        //Load Character Position
+        if (playerCharacterRef) {
+            playerCharacterRef.transform.position = new Vector3(LoadedSaveFile.loadedSaveData.playerCoord.positionX, LoadedSaveFile.loadedSaveData.playerCoord.positionY, LoadedSaveFile.loadedSaveData.playerCoord.positionZ);
+            playerCharacterRef.transform.eulerAngles = new Vector3(LoadedSaveFile.loadedSaveData.playerCoord.orientationX, LoadedSaveFile.loadedSaveData.playerCoord.orientationY, LoadedSaveFile.loadedSaveData.playerCoord.orientationZ);
+        }
+        else {
+            Debug.LogError("[Error] Reference to playerCharacterRef missing!");
+        }
+
+        //Load Mob positions
+        //Case: There are more mobs present than in savefile
+
+
+
+
+        //if (LoadedSaveFile.loadedSaveData.mobCoord.Length > 0) {
+
+        //    if ()
+
+        //    //if (mobRefs.Length == LoadedSaveFile.loadedSaveData.mobCoord.Length) {
+        //    //    for (int i = 0; i < mobRefs.Length; i++) {
+        //    //        mobRefs[i].position = new Vector3(LoadedSaveFile.loadedSaveData.mobCoord[i].positionX, LoadedSaveFile.loadedSaveData.mobCoord[i].positionY,LoadedSaveFile.loadedSaveData.mobCoord[i].positionZ);
+        //    //        mobRefs[i].eulerAngles = new Vector3(LoadedSaveFile.loadedSaveData.mobCoord[i].orientationX, LoadedSaveFile.loadedSaveData.mobCoord[i].orientationY,LoadedSaveFile.loadedSaveData.mobCoord[i].orientationZ);
+        //    //    }
+        //    //}
+        //    //else {
+        //    //    Debug.LogError("[Error] Mobs reference count present in level do not match amount in save file.");
+        //    //}
+        //}
+        //else {
+        //    Debug.LogWarning("[Warning] There are no mobs tracked in save file.");
+        //}
+
+        yield return new WaitForSeconds(3.0f);
+        Time.timeScale = 1;
     }
 }
