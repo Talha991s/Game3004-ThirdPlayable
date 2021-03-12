@@ -6,7 +6,6 @@
 
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-//using UnityEngine;
 
 public static class SaveFileReaderWriter
 {
@@ -37,14 +36,13 @@ public static class SaveFileReaderWriter
         }
     }
 
-    //Untested
     //Returns an array of available save files that can be loaded
     public static string[] CheckAvailableSaveFiles(string _saveFileDirectory, string _saveFileName) 
     {
-        string[] saveFileNames = new string[9]; //This game will have a maximum 9 save slots hardcoded.
+        string[] saveFileNames = new string[4]; //This game will have a maximum 4 save slots hardcoded.
         BinaryFormatter formatter = new BinaryFormatter();
 
-        for (int index = 0; index <= 8; index++) 
+        for (int index = 0; index < 4; index++) 
         {
             if (File.Exists(_saveFileDirectory + "/" + _saveFileName + index.ToString())) 
             {
