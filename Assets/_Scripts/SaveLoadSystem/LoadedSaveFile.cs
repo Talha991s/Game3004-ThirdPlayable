@@ -10,5 +10,6 @@ using System.Collections.Generic;
 
 public static class LoadedSaveFile 
 {
-    public static SaveData loadedSaveData; 
+    public static SaveData loadedSaveData;
+    public static bool loadLevelBasedOnSaveFile = false;
 }
