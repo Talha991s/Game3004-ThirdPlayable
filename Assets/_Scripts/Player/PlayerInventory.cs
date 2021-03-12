@@ -41,6 +41,7 @@ public class PlayerInventory : MonoBehaviour
     private void Awake(){
         //count how many seeds / total points the player has collected
         FindTotalSeeds();
+        CloseInvetory(false);
     }
     void FixedUpdate(){
         //Counter to close players seeds collected when opened
@@ -63,7 +64,7 @@ public class PlayerInventory : MonoBehaviour
         inventoryAnimator.SetBool("OpenInventory", true); //Change bool in animator to true so it opens
         seedTextAnimator.SetBool("ShowCount", true);
     }
-    public void CloseInvetory(bool _closebutton) //Middle button in inventory calls this funtion to close the inventory
+    public void CloseInvetory(bool _closebutton) //Middle button in inventory calls this funtion to close the inventory / bool is whether it is a button click noise or not
     {
         if(_closebutton){
             FindObjectOfType<SoundManager>().Play("InventoryClick");
