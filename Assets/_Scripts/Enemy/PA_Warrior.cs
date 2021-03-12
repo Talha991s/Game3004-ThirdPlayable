@@ -23,6 +23,17 @@ public class PA_Warrior : MonoBehaviour
     public float AggroRange;  // Distance of aggro, detection.
     public float CombatDistance; // How far it can swing.
     public bool IsAggro, IsCombatDistance; // is in aggro range,  is it in combat range?
+
+    [SerializeField] private bool IsDrone, isMoving; // is this a drone enemy // is the drone moving. // is the laser already cooled down // is the laser currently getting cooled down.
+
+    private bool shooting, laserCD = false; //Is the enemy already shooting? // is the laser on cool down? /already fired
+    [SerializeField] private Animator leftWing, rightWing; // is this a drone enemy // is the drone moving.
+
+    private GameObject redDot, barrel; //reference to the reddot of the laser
+
+    [SerializeField] GameObject bullet;
+
+    private Vector3 spawnPoint;
                                            
     // Start is called before the first frame update
     void Start()
@@ -34,6 +45,11 @@ public class PA_Warrior : MonoBehaviour
     {
         player = GameObject.Find("Stylized Astronaut").transform;
         NavAgent = GetComponent<NavMeshAgent>();
+        spawnPoint = transform.position;
+        if(IsDrone){
+           redDot = GameObject.Find("RedDot");
+           barrel = GameObject.Find("Barrel");
+        }
 
     }
     // Update is called once per frame
@@ -42,23 +58,28 @@ public class PA_Warrior : MonoBehaviour
         IsAggro = Physics.CheckSphere(transform.position, AggroRange, PlayerDetection);
         IsCombatDistance = Physics.CheckSphere(transform.position, CombatDistance, PlayerDetection);
 
-        if (!IsAggro && !IsCombatDistance)
-        {
-            Patrol();
-        }
-        if (IsAggro && !IsCombatDistance)
-        {
-            Hunt();
-        }
-        if (IsCombatDistance && IsAggro)
-        {
+        if(!IsDrone){
+             if (!IsAggro && !IsCombatDistance)
+            {
+                Patrol();
+            }
+            if (IsAggro && !IsCombatDistance)
+            {
+                Hunt();
+            }
+            if (IsCombatDistance && IsAggro)
+            {
 
-            AttackPlayer();
+                AttackPlayer();
+            }
+            if (!IsCombatDistance)
+            {
+                anim.SetBool("Attack", false);
+            }
+        }else if(IsDrone){
+            DroneAI();
         }
-        if (!IsCombatDistance)
-        {
-            anim.SetBool("Attack", false);
-        }
+       
     }
     private void ResetAttack()
     {
@@ -113,6 +134,120 @@ public class PA_Warrior : MonoBehaviour
         NavAgent.SetDestination(player.position);
         anim.SetBool("Moving", true);
     }
+
+
+
+//-----DRONE FUNCTIONS-----
+    private void DroneAI(){
+         if (!IsAggro && !IsCombatDistance)
+        {
+            FlyToStartPos();
+        }
+        if (IsAggro && !IsCombatDistance && !isMoving)
+        {
+            FlyAt();
+        }
+        if (IsAggro && !IsCombatDistance && isMoving && !shooting)
+        {
+            FlyTo();
+        }
+        if (IsCombatDistance && IsAggro)
+        {
+            ShootLaser();
+        }
+        if(shooting){
+            ShootLaser();
+        }
+    }
+
+    private void FlyToStartPos(){
+        NavAgent.SetDestination(spawnPoint);
+         if (!NavAgent.pathPending)
+        {
+            if (NavAgent.remainingDistance <= NavAgent.stoppingDistance)
+            {
+                if (!NavAgent.hasPath || NavAgent.velocity.sqrMagnitude == 0f)
+                {
+                     
+                     anim.SetBool("Moving", false);
+                }
+            }
+        }
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("IdleAnim") )
+        {
+             anim.SetBool("InAir", false);
+                Transform[] ts = gameObject.transform.GetComponentsInChildren<Transform>();
+                foreach (Transform t in ts){
+                     if (t.gameObject.name == "Particle"){
+                          t.GetChild(0).gameObject.SetActive(false);
+                     }
+                }
+                leftWing.enabled = false;
+                rightWing.enabled = false;
+                isMoving =false;
+        }
+        
+    }
+    private void FlyAt()
+    {
+        Transform[] ts = gameObject.transform.GetComponentsInChildren<Transform>();
+         foreach (Transform t in ts){
+             if (t.gameObject.name == "Particle"){
+                t.GetChild(0).gameObject.SetActive(true);
+             }
+         }
+         leftWing.enabled = true;
+         rightWing.enabled = true;
+         
+        anim.SetBool("Moving", true);
+       
+        anim.SetBool("InAir", true);
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("MovingAnim"))
+        {
+            isMoving = true;
+        }
+
+    }
+
+    private void FlyTo(){
+       NavAgent.SetDestination(player.position);
+    }
+
+    private void ShootLaser(){
+        NavAgent.SetDestination(transform.position); //stay in position
+        transform.LookAt(new Vector3(player.position.x, player.position.y + 1, player.position.z)); //make enemy face player
+        barrel.transform.LookAt(new Vector3(player.position.x, player.position.y - 0.2f, player.position.z));
+        //check if its on cool down.
+        if(!laserCD && !shooting){ //if laser isnt on cooldown.
+            //start animation!
+            shooting = true;
+            anim.SetBool("Attack", true); //make attack animation play.
+            FindObjectOfType<SoundManager>().Play("LaserCharge"); //Make laser charging sound.
+            Debug.Log("Pew");
+            redDot.SetActive(true); //show red dot in anim.
+             
+        }
+        if(!laserCD && anim.GetCurrentAnimatorStateInfo(0).IsName("DoneShootingAnim")){ //Check if Shooting animation is done..?
+                redDot.SetActive(false); //hide red dot in anim.
+                GameObject b = Instantiate(bullet);
+                b.transform.position = barrel.transform.position;
+                b.GetComponent<EnemyBullet>().direction = barrel.transform.forward;
+                FindObjectOfType<SoundManager>().Play("EnemyShoot"); //Make shooting sound.
+                laserCD = true; //Laser is now on cool down till invoke goes off.
+                Invoke(nameof(LaserRefresh), ATKStall);
+                anim.SetBool("Attack", false); //make attack animation play.
+        }
+       
+    }
+
+    private void LaserRefresh(){
+        //Laser ready to go again (already been shot)
+        laserCD = false;
+        shooting = false;
+        
+    }
+
+    
 
  
 

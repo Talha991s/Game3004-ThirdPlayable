@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5726667746082707451}
   - component: {fileID: 8530865419193448558}
   - component: {fileID: 9178437593521492420}
-  - component: {fileID: 141419704772444269}
   m_Layer: 0
   m_Name: EnemyPoof
   m_TagString: Untagged
@@ -110,15 +109,3 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &141419704772444269
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5808841620909367894}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee43e461c9751324493a39da08af4f9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
