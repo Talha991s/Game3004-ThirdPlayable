@@ -51,7 +51,10 @@ public class PlayerHealth : MonoBehaviour
         {
             win.SetActive(true);
         }
-    
+        if(other.gameObject.CompareTag("EnemyBullet"))
+        {
+            TakeDamage(10);
+        }
 
     }
     private void OnCollisionEnter(Collision collision)
