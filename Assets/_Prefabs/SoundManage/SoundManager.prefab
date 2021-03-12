@@ -140,3 +140,11 @@ MonoBehaviour:
     pitch: 1
     loop: 0
     source: {fileID: 0}
+  - mainmusic: {fileID: 0}
+    sfxgroup: {fileID: 24300002, guid: 7fe6a62349153854aa8a76b6c19148a1, type: 2}
+    name: EnemyShoot
+    clip: {fileID: 8300000, guid: 46265dd3a17a4ed4a97c522527c66bfe, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
