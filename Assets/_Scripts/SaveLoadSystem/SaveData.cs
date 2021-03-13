@@ -12,9 +12,9 @@ using System.Collections.Generic;
 [Serializable]
 public class SaveData 
 {
+    public int[] playerInventory;
     public string savefileHeader; //The save file header seen in-game view. This is different from the save file name.
     public string gameVersion;
-
     public TransformLite playerCoord;
 
     //Note: Count must be checked before use
@@ -37,6 +37,15 @@ public class SaveData
         gameVersion = "undefined";
 
         playerCoord = new TransformLite(0, 0, 0, 0, 0, 0);
+
+        playerInventory = new int[8]; //0 = empty, 1 = seed, 2 = super seed
+        playerInventory[0] = 0;
+        playerInventory[1] = 0;
+        playerInventory[2] = 0;
+        playerInventory[3] = 0;
+        playerInventory[4] = 0;
+        playerInventory[5] = 0;
+        playerInventory[6] = 0;
 
         healthAmount = 100;
         livesAmount = 3;

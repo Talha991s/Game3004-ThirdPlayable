@@ -22,6 +22,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (currentHealth > maxhealth) {
             currentHealth = maxhealth;
+            healthBar.SetMaxHealth(maxhealth);
         }
         else if (currentHealth < 0) {
             currentHealth = 0;
@@ -99,8 +100,9 @@ public class PlayerHealth : MonoBehaviour
     
     //Note: Used in loading/saving game
     public void SetHealth(int _amount) {
-        if (_amount > maxhealth) {
+        if (_amount >= maxhealth) {
             currentHealth = maxhealth;
+            healthBar.SetMaxHealth(maxhealth);
         }
         else if (_amount < 0) {
             currentHealth = 0;

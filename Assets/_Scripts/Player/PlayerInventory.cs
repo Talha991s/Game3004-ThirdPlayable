@@ -1,4 +1,4 @@
-/*  Author: Tyler McMillan; Edited by Joseph Malibiran
+/*  Author: Tyler McMillan; Edited by Salick Talhah, Joseph Malibiran
  *  Date Created: February 3, 2021
  *  Last Updated: March 13, 2021
  *  Description: This script is used for managing everything related to the players inventory. 
@@ -111,7 +111,7 @@ public class PlayerInventory : MonoBehaviour
             Debug.Log("Non existent item"); //Error text
             return true;//Tells that item was not processed
     }
-    private void AddItemToList(string _name){
+    public void AddItemToList(string _name){
         for(int item = 0; item < playerItems.Count; item ++){
             if(playerItems[item] == null || playerItems[item] == ""){ //Check if item is empty or null so it can replace that space.
                 playerItems[item] = _name;
@@ -120,7 +120,7 @@ public class PlayerInventory : MonoBehaviour
         }
             playerItems.Add(_name); //Add item to players item list
     }
-    private void DisplayInventory(){ //Called when an item is picked up
+    public void DisplayInventory(){ //Called when an item is picked up
          for(int i = 0; i < playerItems.Count; i++){ //Cycle through collected items
              switch(playerItems[i]){ //check strings of items
                  case "Seed":  //example if item name is seed display image on button
@@ -188,6 +188,20 @@ public class PlayerInventory : MonoBehaviour
     - clicking that item does a certain function. / some how get whatever button you press and get its name so you can match its name to an inventory slot or something. 
     */
 
+    //Returns the string value of an inventory slot at a given index
+    //Note: Used for saving inventory data to save file
+    public string CheckItemAtInventorySlot(int _slotIndex) {
+        if (_slotIndex >= playerItems.Count) {
+            return "";
+        }
+
+        if (playerItems[_slotIndex] == null) {
+            return "";
+        }
+
+        return playerItems[_slotIndex];
+    }
+
     //----------------------SEED FUNCTIONS -----------------------
     public void CollectSeed(int _amount){
         //Gets called from "seed script" when player steps in a seeds trigger box, it gets sent that seeds value
@@ -207,11 +221,13 @@ public class PlayerInventory : MonoBehaviour
         totalSeedTxt.text = totalSeeds.ToString();
     }
 
+    //Returns player collected seed amount
     //Note: Used in loading/saving game
     public int GetPlayerSeedAmount() {
         return playerSeeds;
     }
 
+    //Sets player collected seed amount
     //Note: Used in loading/saving game
     public void SetPlayerSeedAmount(int _amount) {
         playerSeeds = _amount;

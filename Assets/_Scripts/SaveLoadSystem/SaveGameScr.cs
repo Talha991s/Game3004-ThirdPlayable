@@ -33,7 +33,7 @@ public class SaveGameScr : MonoBehaviour{
         }
         else {
             if (playerHealthRef) {
-                playerHealthRef.currentHealth = playerHealthRef.maxhealth;
+                playerHealthRef.SetHealth(playerHealthRef.maxhealth);
             }
         }
     }
@@ -131,9 +131,31 @@ public class SaveGameScr : MonoBehaviour{
             Debug.LogError("[Error] Reference to player health is missing!");
         }
 
-        //Save Collected Seed amount
+        //Save Collected Seed amount and inventory
         if (inventoryRef) {
             newSaveData.seedsCollected = inventoryRef.GetPlayerSeedAmount();
+
+            for (int inventorySlot = 0; inventorySlot < newSaveData.playerInventory.Length; inventorySlot++) {
+
+                if (inventoryRef.CheckItemAtInventorySlot(inventorySlot) == null) {
+                    newSaveData.playerInventory[inventorySlot] = 0;
+                }
+
+                switch (inventoryRef.CheckItemAtInventorySlot(inventorySlot)) {
+                    case "Seed":
+                        newSaveData.playerInventory[inventorySlot] = 1;
+                        break;
+                    case "SuperSeed":
+                        newSaveData.playerInventory[inventorySlot] = 2;
+                        break;
+                    case "":
+                        newSaveData.playerInventory[inventorySlot] = 0;
+                        break;
+                    default:
+                        newSaveData.playerInventory[inventorySlot] = 0;
+                        break;
+                }
+            }
         }
         else {
             Debug.LogError("[Error] Reference to inventory is missing!");
@@ -163,7 +185,7 @@ public class SaveGameScr : MonoBehaviour{
         //Set up player character transform
         if (playerCharacterRef) {
             playerCharacterRef.position = new Vector3(LoadedSaveFile.loadedSaveData.playerCoord.positionX, LoadedSaveFile.loadedSaveData.playerCoord.positionY, LoadedSaveFile.loadedSaveData.playerCoord.positionZ);
-            playerCharacterRef.eulerAngles = new Vector3(LoadedSaveFile.loadedSaveData.playerCoord.orientationX, LoadedSaveFile.loadedSaveData.playerCoord.orientationY, LoadedSaveFile.loadedSaveData.playerCoord.orientationZ);
+            playerCharacterRef.eulerAngles = new Vector3(0, LoadedSaveFile.loadedSaveData.playerCoord.orientationY, 0);
         }
         else {
             Debug.LogError("[Error] Reference to player character missing.");
@@ -180,10 +202,28 @@ public class SaveGameScr : MonoBehaviour{
         //Set seed collected amount and inventory (TODO)
         if (inventoryRef) {
             inventoryRef.SetPlayerSeedAmount(LoadedSaveFile.loadedSaveData.seedsCollected);
+
+            for (int inventorySlot = 0; inventorySlot < 8; inventorySlot++) {
+                switch (LoadedSaveFile.loadedSaveData.playerInventory[inventorySlot]) {
+                    case 1:
+                        inventoryRef.AddItemToList("Seed");
+                        break;
+                    case 2:
+                        inventoryRef.AddItemToList("SuperSeed");
+                        break;
+                    case 0:
+                        //inventoryRef.AddItemToList("");
+                        break;
+                    default:
+                        //inventoryRef.AddItemToList("");
+                        break;
+                }
+            }
         }
         else {
             Debug.LogError("[Error] Reference to inventory is missing!");
         }
+        inventoryRef.DisplayInventory();
 
         yield return new WaitForSeconds(3.0f);
         Time.timeScale = 1;
