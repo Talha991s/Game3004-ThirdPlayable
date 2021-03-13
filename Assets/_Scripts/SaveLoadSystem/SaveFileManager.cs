@@ -1,6 +1,6 @@
 /*  Author: Joseph Malibiran
  *  Date Created: January 28, 2021
- *  Last Updated: March 11, 2021
+ *  Last Updated: March 13, 2021
  *  Description: Manages and also retains information regarding the loaded save files and all available save files. 
  *  
  */
@@ -87,7 +87,7 @@ public class SaveFileManager : MonoBehaviour {
         newSaveData.savefileHeader = "(Quicksave) Marco    Lives: " + newSaveData.livesAmount + "; Ammo: " + newSaveData.ammoAmount + "; Seeds: " + newSaveData.seedsCollected + "; Levels Unlocked: " + newSaveData.levelsUnlocked;
         newSaveData.gameVersion = this.gameVersion;
 
-        newSaveData.playerCoord = new TransformLite(playerCharacterRef.position.x, playerCharacterRef.position.y, playerCharacterRef.position.z, playerCharacterRef.eulerAngles.x, playerCharacterRef.eulerAngles.y,playerCharacterRef.eulerAngles.z);
+        //newSaveData.playerCoord = new TransformLite(playerCharacterRef.position.x, playerCharacterRef.position.y, playerCharacterRef.position.z, playerCharacterRef.eulerAngles.x, playerCharacterRef.eulerAngles.y,playerCharacterRef.eulerAngles.z);
 
         newSaveData.livesAmount = this.livesAmount;
         newSaveData.ammoAmount = this.ammoAmount;
@@ -108,10 +108,10 @@ public class SaveFileManager : MonoBehaviour {
         }
 
         SaveData newSaveData = new SaveData();
-        newSaveData.savefileHeader = "Marco    Lives: " + newSaveData.livesAmount + "; Ammo: " + newSaveData.ammoAmount + "; Seeds: " + newSaveData.seedsCollected + "; Levels Unlocked: " + newSaveData.levelsUnlocked;
+        newSaveData.savefileHeader = "Marco    Health: " + newSaveData.healthAmount + "; Ammo: " + newSaveData.ammoAmount + "; Seeds: " + newSaveData.seedsCollected + "; Levels Unlocked: " + newSaveData.levelsUnlocked;
         newSaveData.gameVersion = this.gameVersion;
 
-        newSaveData.playerCoord = new TransformLite(playerCharacterRef.position.x, playerCharacterRef.position.y, playerCharacterRef.position.z, playerCharacterRef.eulerAngles.x, playerCharacterRef.eulerAngles.y,playerCharacterRef.eulerAngles.z);
+        //newSaveData.playerCoord = new TransformLite(playerCharacterRef.position.x, playerCharacterRef.position.y, playerCharacterRef.position.z, playerCharacterRef.eulerAngles.x, playerCharacterRef.eulerAngles.y,playerCharacterRef.eulerAngles.z);
 
         newSaveData.livesAmount = this.livesAmount;
         newSaveData.ammoAmount = this.ammoAmount;
@@ -167,8 +167,8 @@ public class SaveFileManager : MonoBehaviour {
 
         //TODO Temp: Display in inspector
         this.showOpenSaveHeader = LoadedSaveFile.loadedSaveData.savefileHeader;
-        this.showPlayerLocation = new Vector3(LoadedSaveFile.loadedSaveData.playerCoord.positionX, LoadedSaveFile.loadedSaveData.playerCoord.positionY, LoadedSaveFile.loadedSaveData.playerCoord.positionZ);
-        this.showPlayerOrientation = new Vector3(LoadedSaveFile.loadedSaveData.playerCoord.orientationX, LoadedSaveFile.loadedSaveData.playerCoord.orientationY, LoadedSaveFile.loadedSaveData.playerCoord.orientationZ);
+        //this.showPlayerLocation = new Vector3(LoadedSaveFile.loadedSaveData.playerCoord.positionX, LoadedSaveFile.loadedSaveData.playerCoord.positionY, LoadedSaveFile.loadedSaveData.playerCoord.positionZ);
+        //this.showPlayerOrientation = new Vector3(LoadedSaveFile.loadedSaveData.playerCoord.orientationX, LoadedSaveFile.loadedSaveData.playerCoord.orientationY, LoadedSaveFile.loadedSaveData.playerCoord.orientationZ);
         this.showHealthAmount = LoadedSaveFile.loadedSaveData.healthAmount;
         this.showLivesAmount = LoadedSaveFile.loadedSaveData.livesAmount;
         this.showAmmoAmount = LoadedSaveFile.loadedSaveData.ammoAmount;
@@ -256,8 +256,8 @@ public class SaveFileManager : MonoBehaviour {
         //Set up level if applicable
         //Load Character Position
         if (playerCharacterRef) {
-            playerCharacterRef.transform.position = new Vector3(LoadedSaveFile.loadedSaveData.playerCoord.positionX, LoadedSaveFile.loadedSaveData.playerCoord.positionY, LoadedSaveFile.loadedSaveData.playerCoord.positionZ);
-            playerCharacterRef.transform.eulerAngles = new Vector3(LoadedSaveFile.loadedSaveData.playerCoord.orientationX, LoadedSaveFile.loadedSaveData.playerCoord.orientationY, LoadedSaveFile.loadedSaveData.playerCoord.orientationZ);
+            //playerCharacterRef.transform.position = new Vector3(LoadedSaveFile.loadedSaveData.playerCoord.positionX, LoadedSaveFile.loadedSaveData.playerCoord.positionY, LoadedSaveFile.loadedSaveData.playerCoord.positionZ);
+            //playerCharacterRef.transform.eulerAngles = new Vector3(LoadedSaveFile.loadedSaveData.playerCoord.orientationX, LoadedSaveFile.loadedSaveData.playerCoord.orientationY, LoadedSaveFile.loadedSaveData.playerCoord.orientationZ);
         }
         else {
             Debug.LogError("[Error] Reference to playerCharacterRef missing!");

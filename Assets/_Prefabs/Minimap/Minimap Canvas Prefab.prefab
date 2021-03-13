@@ -137,7 +137,7 @@ Camera:
   m_Depth: 10
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 65
+    m_Bits: 193
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 246cab3da6a8f81478e522cf2ee31287, type: 2}
   m_TargetDisplay: 0
@@ -240,7 +240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.003921569}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -394,8 +394,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetPlayerRef: {fileID: 0}
-  registeredEnemyRefs: []
-  registeredPickupRefs: []
+  registeredEnemyRefs:
+  - {fileID: 0}
+  - {fileID: 0}
+  registeredPickupRefs:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   registeredCheckpointRefs: []
   registeredObjectiveRefs: []
   canvasContainerRef: {fileID: 0}

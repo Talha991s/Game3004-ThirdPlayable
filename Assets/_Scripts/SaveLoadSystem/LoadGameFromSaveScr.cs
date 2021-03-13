@@ -1,3 +1,9 @@
+/*  Author: Joseph Malibiran
+ *  Date Created: March 12, 2021
+ *  Last Updated: March 13, 2021
+ *  Description: 
+ */
+
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,6 +12,8 @@ using UnityEngine.SceneManagement;
 
 public class LoadGameFromSaveScr : MonoBehaviour
 {
+
+
 
     private void Awake() 
     {
