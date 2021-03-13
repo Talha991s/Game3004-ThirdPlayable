@@ -1,6 +1,6 @@
-/*  Author: Salick Talhah
+/*  Author: Salick Talhah; Edited by Tyler McMillan, Joseph Malibiran
  *  Date Created: February 14, 2021
- *  Last Updated: February 20, 2021
+ *  Last Updated: March 13, 2021
  *  Description: This script is used to control the damage and amount of health, load the game over screen and check collision with hazard.
  */
 
@@ -14,21 +14,29 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private GameObject gameover;
     [SerializeField] private GameObject win;
     public int maxhealth = 100;
-    public int currentHealth;
+    public int currentHealth = 100;
     public HealthBar healthBar;
 
     // Start is called before the first frame update
     void Start()
     {
-        currentHealth = maxhealth;
-        healthBar.SetMaxHealth(maxhealth);
+        if (currentHealth > maxhealth) {
+            currentHealth = maxhealth;
+        }
+        else if (currentHealth < 0) {
+            currentHealth = 0;
+        }
+
+        //Note: The lines below are commented out because it will interfere in the scenario where we will be loading a health amount from a save file.
+        //currentHealth = maxhealth;
+        //healthBar.SetMaxHealth(maxhealth);
     }
 
     // Update is called once per frame
     void Update()
     {
         
-        if (currentHealth == 0)
+        if (currentHealth <= 0)
         {
            // FindObjectOfType<SoundManager>().Play("dead");
             GameOver();
@@ -37,7 +45,13 @@ public class PlayerHealth : MonoBehaviour
     }
    public void TakeDamage(int damage)
    {
-        currentHealth -= damage;
+        if ( (currentHealth - damage) < 0) {
+            currentHealth = 0;
+        }
+        else {
+            currentHealth -= damage;
+        }
+        
         healthBar.SetHealth(currentHealth);
    }
 
@@ -72,8 +86,6 @@ public class PlayerHealth : MonoBehaviour
         //  gameover.SetActive(true);
     }
 
-
-
     //Hopefully you dont mind salick but im writing this add health script, you can do as you wish with it.
     public void AddHealth(int _amount){ //add amount of health from inventory screen when seed button is pressed
         if(currentHealth < maxhealth){  //check if health is under max health
@@ -85,4 +97,18 @@ public class PlayerHealth : MonoBehaviour
         healthBar.SetHealth(currentHealth);
     }
     
+    //Note: Used in loading/saving game
+    public void SetHealth(int _amount) {
+        if (_amount > maxhealth) {
+            currentHealth = maxhealth;
+        }
+        else if (_amount < 0) {
+            currentHealth = 0;
+        }
+        else {
+            currentHealth = _amount;
+        }
+        healthBar.SetHealth(currentHealth);
+    }
+
 }

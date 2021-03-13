@@ -1,6 +1,6 @@
-/*  Author: Tyler McMillan
+/*  Author: Tyler McMillan; Edited by Joseph Malibiran
  *  Date Created: February 3, 2021
- *  Last Updated: February 17, 2021
+ *  Last Updated: March 13, 2021
  *  Description: This script is used for managing everything related to the players inventory. 
  */
 
@@ -207,6 +207,17 @@ public class PlayerInventory : MonoBehaviour
         totalSeedTxt.text = totalSeeds.ToString();
     }
 
-    
+    //Note: Used in loading/saving game
+    public int GetPlayerSeedAmount() {
+        return playerSeeds;
+    }
+
+    //Note: Used in loading/saving game
+    public void SetPlayerSeedAmount(int _amount) {
+        playerSeeds = _amount;
+        playerSeedTxt.text = playerSeeds.ToString();
+        seedTextAnimator.SetBool("ShowCount", true);
+        showSeedText = true;
+    }
 }
 

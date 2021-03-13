@@ -1,11 +1,12 @@
 /*  Author: Joseph Malibiran
  *  Date Created: January 28, 2021
- *  Last Updated: January 28, 2021
+ *  Last Updated: March 13, 2021
  *  Description: This static class contains functions that allow SaveData objects to be written as save files and reads save files.
  */
 
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using UnityEngine;
 
 public static class SaveFileReaderWriter
 {
@@ -37,6 +38,7 @@ public static class SaveFileReaderWriter
     }
 
     //Returns an array of available save files that can be loaded
+    //TODO Remove; move functionality to a more dynamic class
     public static string[] CheckAvailableSaveFiles(string _saveFileDirectory, string _saveFileName) 
     {
         string[] saveFileNames = new string[4]; //This game will have a maximum 4 save slots hardcoded.
@@ -44,15 +46,16 @@ public static class SaveFileReaderWriter
 
         for (int index = 0; index < 4; index++) 
         {
-            if (File.Exists(_saveFileDirectory + "/" + _saveFileName + index.ToString())) 
+            if (File.Exists(_saveFileDirectory + "/" + _saveFileName + (index + 1).ToString() + ".hamsave")) 
             {
-                FileStream stream = new FileStream(_saveFileDirectory + "/" + _saveFileName + (index).ToString(), FileMode.Open);
+                FileStream stream = new FileStream(_saveFileDirectory + "/" + _saveFileName + (index + 1).ToString() + ".hamsave", FileMode.Open);
                 SaveData data = formatter.Deserialize(stream) as SaveData;
                 saveFileNames[index] = data.savefileHeader;
                 stream.Close();
             }
             else 
             {
+                //Debug.Log("Save file does not exist at index " + index);
                 saveFileNames[index] = "Empty Save Slot";
             }
         }

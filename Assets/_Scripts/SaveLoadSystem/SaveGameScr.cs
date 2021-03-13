@@ -15,6 +15,8 @@ public class SaveGameScr : MonoBehaviour{
 
     [Header("References")]
     [SerializeField] private Transform playerCharacterRef;
+    [SerializeField] private PlayerHealth playerHealthRef;
+    [SerializeField] private PlayerInventory inventoryRef;
     [SerializeField] private Text[] saveSlots = new Text[4];
 
     [Header("Settings")]
@@ -28,6 +30,11 @@ public class SaveGameScr : MonoBehaviour{
         {
             LoadedSaveFile.loadLevelBasedOnSaveFile = false;
             LoadGameFromSelectedSaveFile();
+        }
+        else {
+            if (playerHealthRef) {
+                playerHealthRef.currentHealth = playerHealthRef.maxhealth;
+            }
         }
     }
 
@@ -116,15 +123,30 @@ public class SaveGameScr : MonoBehaviour{
             Debug.LogError("[Error] Reference to player character is missing!");
         }
 
+        //Save Player Health
+        if (playerHealthRef) {
+            newSaveData.healthAmount = playerHealthRef.currentHealth;
+        }
+        else {
+            Debug.LogError("[Error] Reference to player health is missing!");
+        }
+
+        //Save Collected Seed amount
+        if (inventoryRef) {
+            newSaveData.seedsCollected = inventoryRef.GetPlayerSeedAmount();
+        }
+        else {
+            Debug.LogError("[Error] Reference to inventory is missing!");
+        }
+
         //TEMP settings
-        newSaveData.healthAmount = 100;
+        
         newSaveData.livesAmount = 3;
         newSaveData.ammoAmount = 100;
-        newSaveData.seedsCollected = 0;
         newSaveData.aliensKilled = 0;
         newSaveData.currentLevel = 1; //0 means not in a level
         newSaveData.levelsUnlocked = 1;
-        newSaveData.savefileHeader = "[Marco] Seeds: " + newSaveData.seedsCollected + "; Levels Unlocked: " + newSaveData.levelsUnlocked;
+        newSaveData.savefileHeader = "[Marco] Health: " + newSaveData.healthAmount + "; Seeds: " + newSaveData.seedsCollected + "; Levels Unlocked: " + newSaveData.levelsUnlocked;
 
         SaveFileReaderWriter.WriteToSaveFile(Application.persistentDataPath + "/" + savefileName + _saveSlotIndex + ".hamsave", newSaveData);
 
@@ -138,13 +160,29 @@ public class SaveGameScr : MonoBehaviour{
     {
         Time.timeScale = 0;
 
-        //Set up player character
+        //Set up player character transform
         if (playerCharacterRef) {
             playerCharacterRef.position = new Vector3(LoadedSaveFile.loadedSaveData.playerCoord.positionX, LoadedSaveFile.loadedSaveData.playerCoord.positionY, LoadedSaveFile.loadedSaveData.playerCoord.positionZ);
             playerCharacterRef.eulerAngles = new Vector3(LoadedSaveFile.loadedSaveData.playerCoord.orientationX, LoadedSaveFile.loadedSaveData.playerCoord.orientationY, LoadedSaveFile.loadedSaveData.playerCoord.orientationZ);
         }
         else {
             Debug.LogError("[Error] Reference to player character missing.");
+        }
+
+        //Set player health
+        if (playerHealthRef) {
+            playerHealthRef.SetHealth(LoadedSaveFile.loadedSaveData.healthAmount);
+        }
+        else {
+            Debug.LogError("[Error] Reference to player health is missing!");
+        }
+
+        //Set seed collected amount and inventory (TODO)
+        if (inventoryRef) {
+            inventoryRef.SetPlayerSeedAmount(LoadedSaveFile.loadedSaveData.seedsCollected);
+        }
+        else {
+            Debug.LogError("[Error] Reference to inventory is missing!");
         }
 
         yield return new WaitForSeconds(3.0f);
