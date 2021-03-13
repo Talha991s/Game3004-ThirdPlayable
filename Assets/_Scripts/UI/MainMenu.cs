@@ -33,5 +33,12 @@ public class MainMenu : MonoBehaviour
         FindObjectOfType<SoundManager>().Play("click");
         SceneManager.LoadScene(0);
     }
-
+    public void OnLoadClick()
+    {
+        FindObjectOfType<SoundManager>().Play("click");
+    }
+    public void OnInstructionClick()
+    {
+        FindObjectOfType<SoundManager>().Play("click");
+    }
 }
