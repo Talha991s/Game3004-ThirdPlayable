@@ -20,11 +20,13 @@ public class PlayerHealth : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (currentHealth > maxhealth) {
+        if (currentHealth > maxhealth) 
+        {
             currentHealth = maxhealth;
             healthBar.SetMaxHealth(maxhealth);
         }
-        else if (currentHealth < 0) {
+        else if (currentHealth < 0) 
+        {
             currentHealth = 0;
         }
 
@@ -88,10 +90,13 @@ public class PlayerHealth : MonoBehaviour
     }
 
     //Hopefully you dont mind salick but im writing this add health script, you can do as you wish with it.
-    public void AddHealth(int _amount){ //add amount of health from inventory screen when seed button is pressed
-        if(currentHealth < maxhealth){  //check if health is under max health
+    public void AddHealth(int _amount)
+    { //add amount of health from inventory screen when seed button is pressed
+        if(currentHealth < maxhealth)
+        {  //check if health is under max health
             currentHealth += _amount; //add amount to current health
-            if(currentHealth > maxhealth){ //if health is greater then the max allowed set it to max allowed.
+            if(currentHealth > maxhealth)
+            { //if health is greater then the max allowed set it to max allowed.
                 currentHealth = maxhealth;
             }
         }
@@ -99,15 +104,19 @@ public class PlayerHealth : MonoBehaviour
     }
     
     //Note: Used in loading/saving game
-    public void SetHealth(int _amount) {
-        if (_amount >= maxhealth) {
+    public void SetHealth(int _amount) 
+    {
+        if (_amount >= maxhealth) 
+        {
             currentHealth = maxhealth;
             healthBar.SetMaxHealth(maxhealth);
         }
-        else if (_amount < 0) {
+        else if (_amount < 0) 
+        {
             currentHealth = 0;
         }
-        else {
+        else 
+        {
             currentHealth = _amount;
         }
         healthBar.SetHealth(currentHealth);

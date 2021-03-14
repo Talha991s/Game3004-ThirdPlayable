@@ -19,9 +19,11 @@ public class SaveGameScr : MonoBehaviour{
     [SerializeField] private PlayerInventory inventoryRef;
     [SerializeField] private Text[] saveSlots = new Text[4];
     [SerializeField] private Transform[] pickupsInLevel;
+    [SerializeField] private Transform[] platformsInLevel;
 
     [Header("Settings")]
     [SerializeField] private string savefileName = "Hamstronaut";       //This is the name of the save file. An indexing number will be appended to this name. This is different from the save file header seen in-game.
+    [SerializeField] private int levelNumber = 1;                       //TODO: Verify it is the same level
     private string[] saveFileDisplayHeaders;                            //This game will have a maximum 4 save slots hardcoded.
     private string gameVersion = "0.3b";
 
@@ -94,8 +96,10 @@ public class SaveGameScr : MonoBehaviour{
         }
 
         //Check if current scene matches save file level
-        if (LoadedSaveFile.loadedSaveData.currentLevel == 1) {
-            if (SceneManager.GetActiveScene().buildIndex != 1) {
+        if (LoadedSaveFile.loadedSaveData.currentLevel == 1) 
+        {
+            if (SceneManager.GetActiveScene().buildIndex != 1) 
+            {
                 Debug.LogError("[Error] Save file level data mismatch.");
                 return;
             }
@@ -109,7 +113,8 @@ public class SaveGameScr : MonoBehaviour{
     //Saves game data at given save slot index
     public void SaveGame(int _saveSlotIndex) 
     {
-        if (_saveSlotIndex <= 0 || _saveSlotIndex > 4) { //This game will have a maximum 4 (1 to 4) save slots hardcoded. 
+        if (_saveSlotIndex <= 0 || _saveSlotIndex > 4) 
+        { //This game will have a maximum 4 (1 to 4) save slots hardcoded. 
             Debug.LogError("[Error] Invalid save slot index! Slot number must be between from 1 to 4.");
             return;
         }
@@ -118,15 +123,18 @@ public class SaveGameScr : MonoBehaviour{
         newSaveData.gameVersion = this.gameVersion;
 
         //Save Player location
-        if (playerCharacterRef) {
+        if (playerCharacterRef) 
+        {
             newSaveData.playerCoord = new TransformLite(playerCharacterRef.position.x, playerCharacterRef.position.y, playerCharacterRef.position.z, playerCharacterRef.eulerAngles.x, playerCharacterRef.eulerAngles.y, playerCharacterRef.eulerAngles.z);
         }
-        else {
+        else 
+        {
             Debug.LogError("[Error] Reference to player character is missing!");
         }
 
         //Save Player Health
-        if (playerHealthRef) {
+        if (playerHealthRef) 
+        {
             newSaveData.healthAmount = playerHealthRef.currentHealth;
         }
         else {
@@ -134,16 +142,20 @@ public class SaveGameScr : MonoBehaviour{
         }
 
         //Save Collected Seed amount and inventory
-        if (inventoryRef) {
+        if (inventoryRef) 
+        {
             newSaveData.seedsCollected = inventoryRef.GetPlayerSeedAmount();
 
-            for (int inventorySlot = 0; inventorySlot < newSaveData.playerInventory.Length; inventorySlot++) {
+            for (int inventorySlot = 0; inventorySlot < newSaveData.playerInventory.Length; inventorySlot++) 
+            {
 
-                if (inventoryRef.CheckItemAtInventorySlot(inventorySlot) == null) {
+                if (inventoryRef.CheckItemAtInventorySlot(inventorySlot) == null) 
+                {
                     newSaveData.playerInventory[inventorySlot] = 0;
                 }
 
-                switch (inventoryRef.CheckItemAtInventorySlot(inventorySlot)) {
+                switch (inventoryRef.CheckItemAtInventorySlot(inventorySlot)) 
+                {
                     case "Seed":
                         newSaveData.playerInventory[inventorySlot] = 1;
                         break;
@@ -159,20 +171,53 @@ public class SaveGameScr : MonoBehaviour{
                 }
             }
         }
-        else {
+        else 
+        {
             Debug.LogError("[Error] Reference to inventory is missing!");
         }
 
         //Save current pickups in level
-        newSaveData.levelPickUps = new bool[pickupsInLevel.Length];
-        for (int i = 0; i < pickupsInLevel.Length; i++) {
-            if (pickupsInLevel[i]) {
-                newSaveData.levelPickUps[i] = true;
-            }
-            else {
-                newSaveData.levelPickUps[i] = false;
+        if (pickupsInLevel.Length > 0) 
+        {
+            newSaveData.levelPickUps = new bool[pickupsInLevel.Length];
+            for (int i = 0; i < pickupsInLevel.Length; i++) 
+            {
+                if (pickupsInLevel[i]) 
+                {
+                    newSaveData.levelPickUps[i] = true;
+                }
+                else 
+                {
+                    newSaveData.levelPickUps[i] = false;
+                }
             }
         }
+        else 
+        {
+            Debug.LogWarning("[Warning] There are no pickups found in pickupsInLevel references.");
+        }
+        
+        //Save platform positions
+        //if (platformsInLevel.Length > 0) 
+        //{
+        //    newSaveData.platformCoords = new TransformLite[platformsInLevel.Length];
+        //    for (int platformIndex = 0; platformIndex < platformsInLevel.Length; platformIndex++) 
+        //    {
+        //        if (platformsInLevel[platformIndex]) 
+        //        {
+        //            newSaveData.platformCoords[platformIndex] = new TransformLite(platformsInLevel[platformIndex].position.x, platformsInLevel[platformIndex].position.y, platformsInLevel[platformIndex].position.z, platformsInLevel[platformIndex].rotation.x, platformsInLevel[platformIndex].rotation.y, platformsInLevel[platformIndex].rotation.z);
+        //        }
+        //        else 
+        //        {
+        //            Debug.LogWarning("[Warning] Platform reference in index is missing.");
+        //            newSaveData.platformCoords[platformIndex] = new TransformLite(0, 0, 0, 0, 0, 0);
+        //        }
+        //    }
+        //}
+        //else 
+        //{
+        //    Debug.LogWarning("[Warning] There are no platforms found in platformsInLevel references.");
+        //}
 
         //TEMP settings
         newSaveData.livesAmount = 3;
@@ -195,28 +240,35 @@ public class SaveGameScr : MonoBehaviour{
         Time.timeScale = 0;
 
         //Set up player character transform
-        if (playerCharacterRef) {
+        if (playerCharacterRef) 
+        {
             playerCharacterRef.position = new Vector3(LoadedSaveFile.loadedSaveData.playerCoord.positionX, LoadedSaveFile.loadedSaveData.playerCoord.positionY, LoadedSaveFile.loadedSaveData.playerCoord.positionZ);
             playerCharacterRef.eulerAngles = new Vector3(0, LoadedSaveFile.loadedSaveData.playerCoord.orientationY, 0);
         }
-        else {
+        else 
+        {
             Debug.LogError("[Error] Reference to player character missing.");
         }
 
         //Set player health
-        if (playerHealthRef) {
+        if (playerHealthRef) 
+        {
             playerHealthRef.SetHealth(LoadedSaveFile.loadedSaveData.healthAmount);
         }
-        else {
+        else 
+        {
             Debug.LogError("[Error] Reference to player health is missing!");
         }
 
         //Set seed collected amount and inventory
-        if (inventoryRef) {
+        if (inventoryRef) 
+        {
             inventoryRef.SetPlayerSeedAmount(LoadedSaveFile.loadedSaveData.seedsCollected);
 
-            for (int inventorySlot = 0; inventorySlot < 8; inventorySlot++) {
-                switch (LoadedSaveFile.loadedSaveData.playerInventory[inventorySlot]) {
+            for (int inventorySlot = 0; inventorySlot < 8; inventorySlot++) 
+            {
+                switch (LoadedSaveFile.loadedSaveData.playerInventory[inventorySlot]) 
+                {
                     case 1:
                         inventoryRef.AddItemToList("Seed");
                         break;
@@ -232,19 +284,50 @@ public class SaveGameScr : MonoBehaviour{
                 }
             }
         }
-        else {
+        else 
+        {
             Debug.LogError("[Error] Reference to inventory is missing!");
         }
         inventoryRef.DisplayInventory(); //Add seed sprites to inventory
 
         //Remove pickups that are already taken in save file game
-        for (int i = 0; i < LoadedSaveFile.loadedSaveData.levelPickUps.Length; i++) {
-            if (LoadedSaveFile.loadedSaveData.levelPickUps[i] == false) {
-                if (pickupsInLevel[i]) {
+        if (LoadedSaveFile.loadedSaveData.levelPickUps.Length > 0) 
+        {
+            for (int i = 0; i < LoadedSaveFile.loadedSaveData.levelPickUps.Length; i++) 
+            {
+                if (LoadedSaveFile.loadedSaveData.levelPickUps[i] == false) 
+                {
+                    if (pickupsInLevel[i]) 
+                    {
+                        Destroy(pickupsInLevel[i].gameObject);
+                    }
+                }
+            }
+        }
+        else 
+        {
+            for (int i = 0; i < pickupsInLevel.Length; i++) 
+            {
+                if (pickupsInLevel[i]) 
+                {
                     Destroy(pickupsInLevel[i].gameObject);
                 }
             }
         }
+
+        //Load Platform positions
+        //if (LoadedSaveFile.loadedSaveData.platformCoords.Length > 0) 
+        //{
+        //    for (int i = 0; i < platformsInLevel.Length; i++) 
+        //    {
+        //        platformsInLevel[i].position = new Vector3(LoadedSaveFile.loadedSaveData.platformCoords[i].positionX, LoadedSaveFile.loadedSaveData.platformCoords[i].positionY, LoadedSaveFile.loadedSaveData.platformCoords[i].positionZ);
+        //        platformsInLevel[i].eulerAngles = new Vector3(LoadedSaveFile.loadedSaveData.platformCoords[i].orientationX, LoadedSaveFile.loadedSaveData.platformCoords[i].orientationY, LoadedSaveFile.loadedSaveData.platformCoords[i].orientationZ);
+        //    }
+        //}
+        //else 
+        //{
+        //    Debug.LogWarning("[Warning] No platform postional data in save file.");
+        //}
 
         yield return new WaitForSeconds(0.4f);
         Time.timeScale = 1;

@@ -12,15 +12,15 @@ using System.Collections.Generic;
 [Serializable]
 public class SaveData 
 {
+    public TransformLite[] platformCoords;   //Note: Not set in constructor; Count must be checked before use
     public int[] playerInventory;
-    public string savefileHeader; //The save file header seen in-game view. This is different from the save file name.
+    public string savefileHeader;           //The save file header seen in-game view. This is different from the save file name.
     public string gameVersion;
     public TransformLite playerCoord;
-    public bool[] levelPickUps;
+    public bool[] levelPickUps;             //Note: Not set in constructor; Count must be checked before use
 
     //Note: Count must be checked before use
     //public TransformLite[] mobCoord;
-    //public TransformLite[] platformCoord;
     //public TransformLite[] pickupCoord;
 
     public int healthAmount;
