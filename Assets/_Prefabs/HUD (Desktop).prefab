@@ -693,7 +693,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1676139576635974033}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SaveGameScr, Assembly-CSharp
         m_MethodName: SaveGame
         m_Mode: 3
@@ -1800,7 +1800,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1676139576635974033}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SaveGameScr, Assembly-CSharp
         m_MethodName: SaveGame
         m_Mode: 3
@@ -3730,7 +3730,6 @@ GameObject:
   - component: {fileID: 2683883473237106885}
   - component: {fileID: 3003747333230576087}
   - component: {fileID: 7279539703682552268}
-  - component: {fileID: 1676139576635974033}
   m_Layer: 5
   m_Name: HUD (Desktop)
   m_TagString: Untagged
@@ -3849,27 +3848,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ee4dbd5dc310f34487f6efae93f456f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1676139576635974033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2683883473237106884}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a498c63de57f5584d917dcdd7c39c4e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCharacterRef: {fileID: 0}
-  playerHealthRef: {fileID: 0}
-  inventoryRef: {fileID: 977128241}
-  saveSlots:
-  - {fileID: 4775897056130970483}
-  - {fileID: 6329575163593094843}
-  - {fileID: 1516465898630408780}
-  - {fileID: 2869379963524375017}
-  savefileName: Hamstronaut
 --- !u!1 &2752387718998017897
 GameObject:
   m_ObjectHideFlags: 0
@@ -5549,7 +5527,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1676139576635974033}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SaveGameScr, Assembly-CSharp
         m_MethodName: SaveGame
         m_Mode: 3
@@ -5815,7 +5793,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1676139576635974033}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SaveGameScr, Assembly-CSharp
         m_MethodName: SaveGame
         m_Mode: 3

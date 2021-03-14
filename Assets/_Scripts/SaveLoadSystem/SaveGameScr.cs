@@ -18,11 +18,12 @@ public class SaveGameScr : MonoBehaviour{
     [SerializeField] private PlayerHealth playerHealthRef;
     [SerializeField] private PlayerInventory inventoryRef;
     [SerializeField] private Text[] saveSlots = new Text[4];
+    [SerializeField] private Transform[] pickupsInLevel;
 
     [Header("Settings")]
     [SerializeField] private string savefileName = "Hamstronaut";       //This is the name of the save file. An indexing number will be appended to this name. This is different from the save file header seen in-game.
     private string[] saveFileDisplayHeaders;                            //This game will have a maximum 4 save slots hardcoded.
-    private string gameVersion = "0.3";
+    private string gameVersion = "0.3b";
 
     private void Awake() 
     {
@@ -40,6 +41,7 @@ public class SaveGameScr : MonoBehaviour{
 
     private void Start() 
     {
+        Time.timeScale = 1;
         SetUpSaveSlotHeaders();
     }
 
@@ -161,8 +163,18 @@ public class SaveGameScr : MonoBehaviour{
             Debug.LogError("[Error] Reference to inventory is missing!");
         }
 
+        //Save current pickups in level
+        newSaveData.levelPickUps = new bool[pickupsInLevel.Length];
+        for (int i = 0; i < pickupsInLevel.Length; i++) {
+            if (pickupsInLevel[i]) {
+                newSaveData.levelPickUps[i] = true;
+            }
+            else {
+                newSaveData.levelPickUps[i] = false;
+            }
+        }
+
         //TEMP settings
-        
         newSaveData.livesAmount = 3;
         newSaveData.ammoAmount = 100;
         newSaveData.aliensKilled = 0;
@@ -199,7 +211,7 @@ public class SaveGameScr : MonoBehaviour{
             Debug.LogError("[Error] Reference to player health is missing!");
         }
 
-        //Set seed collected amount and inventory (TODO)
+        //Set seed collected amount and inventory
         if (inventoryRef) {
             inventoryRef.SetPlayerSeedAmount(LoadedSaveFile.loadedSaveData.seedsCollected);
 
@@ -223,9 +235,18 @@ public class SaveGameScr : MonoBehaviour{
         else {
             Debug.LogError("[Error] Reference to inventory is missing!");
         }
-        inventoryRef.DisplayInventory();
+        inventoryRef.DisplayInventory(); //Add seed sprites to inventory
 
-        yield return new WaitForSeconds(3.0f);
+        //Remove pickups that are already taken in save file game
+        for (int i = 0; i < LoadedSaveFile.loadedSaveData.levelPickUps.Length; i++) {
+            if (LoadedSaveFile.loadedSaveData.levelPickUps[i] == false) {
+                if (pickupsInLevel[i]) {
+                    Destroy(pickupsInLevel[i].gameObject);
+                }
+            }
+        }
+
+        yield return new WaitForSeconds(0.4f);
         Time.timeScale = 1;
     }
 }

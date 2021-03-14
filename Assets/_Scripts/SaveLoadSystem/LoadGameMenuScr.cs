@@ -23,7 +23,7 @@ public class LoadGameMenuScr : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private string savefileName = "Hamstronaut";       //This is the name of the save file. An indexing number will be appended to this name. This is different from the save file header seen in-game.
     private string[] saveFileDisplayHeaders;                            //This game will have a maximum 4 save slots hardcoded.
-    private string gameVersion = "0.3";
+    private string gameVersion = "0.3b";
 
     private void Start() 
     {
