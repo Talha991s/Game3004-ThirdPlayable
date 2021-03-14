@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerInventory : MonoBehaviour
 {
@@ -36,6 +37,14 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private float seedShowTime = 3f; //How long to show the seed count for (seconds)
     private float scount = 0f; //Counter just to hold the amount of time elapsed since opened
     [SerializeField] int healAmount = 20; //Amount to heal the player when they eat the seed?
+
+    //For Game Over Screen
+    [Header("GameOver and Win Screen")]
+    [SerializeField] private TMP_Text SeedCollected;
+    [SerializeField] private TMP_Text OverTotalSeed;
+    [SerializeField] private TMP_Text WinSeedCollected;
+    [SerializeField] private TMP_Text WinTotalSeed;
+
 
     //---------------------- Unity Functions ------------------------------
     private void Awake(){
@@ -212,6 +221,8 @@ public class PlayerInventory : MonoBehaviour
         showSeedText = true;
         scount = 0f;
         FindObjectOfType<SoundManager>().Play("collect");  //added by salick
+        SeedCollected.text = playerSeeds.ToString();
+        WinSeedCollected.text = playerSeeds.ToString();
     }
     private void FindTotalSeeds(){
         //Find all seeds in level by finding all "seed" tagged objects and adding up their total worth.
@@ -219,6 +230,8 @@ public class PlayerInventory : MonoBehaviour
             totalSeeds += _seed.GetComponent<SeedScript>().seedWorth;
         }
         totalSeedTxt.text = totalSeeds.ToString();
+        OverTotalSeed.text = totalSeeds.ToString();
+        WinTotalSeed.text = totalSeeds.ToString();
     }
 
     //Returns player collected seed amount
