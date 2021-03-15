@@ -13,6 +13,7 @@ public class LevelLoader : MonoBehaviour
     {
         // add a coroutine to delay the transition
         StartCoroutine(Loadlevel(SceneManager.GetActiveScene().buildIndex +1));
+        StartCoroutine(Loadlevel(SceneManager.GetActiveScene().buildIndex - 1));
     }
 
     IEnumerator Loadlevel(int levelindex)
