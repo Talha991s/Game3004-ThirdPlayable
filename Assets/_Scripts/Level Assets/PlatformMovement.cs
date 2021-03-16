@@ -20,8 +20,12 @@ public class PlatformMovement : MonoBehaviour
     /// Used for MOVE and ELEVATOR
     // positionOne is set to where it is placed in the world
     // positionTwoV is the vector derived from positionTwoT's transform, which is set and changed in Unity
-    Vector3 positionOne;
-    Vector3 positionTwoV;
+
+    //Note: I (Joseph Malibiran) made positional movement to be more similar to rotational movement because its easier to load on the savefile that way.
+    //The prefabs now have a 'First Position' transform- separate from the actual platform.
+    //Vector3 positionOne;
+    //Vector3 positionTwoV;
+    [SerializeField] Transform positionOneT; 
     [SerializeField] Transform positionTwoT;
 
     // Travel speed for the platform
@@ -50,11 +54,13 @@ public class PlatformMovement : MonoBehaviour
     {
         player = GameObject.FindObjectOfType<PlayerMovement>();
 
-        if (platformType == PlatformType.MOVE || platformType == PlatformType.ELEVATOR || platformType == PlatformType.FALLING)
-        {
-            positionOne = transform.position;
-            positionTwoV = positionTwoT.position;
-        }
+        //Note: I (Joseph Malibiran) made positional movement to be more similar to rotational movement because its easier to load on the savefile that way.
+
+        //if (platformType == PlatformType.MOVE || platformType == PlatformType.ELEVATOR || platformType == PlatformType.FALLING)
+        //{
+        //    positionOne = transform.position;
+        //    positionTwoV = positionTwoT.position;
+        //}
     }
 
     // Update is called once per frame
@@ -71,7 +77,7 @@ public class PlatformMovement : MonoBehaviour
         if (platformType == PlatformType.MOVE || platformType == PlatformType.ELEVATOR)
         {
             // Interpolate position between both, PingPong continues so long as first value keeps going, Time.time is perfect for it
-            gameObject.transform.position = Vector3.Lerp(positionOne, positionTwoV, Mathf.PingPong(Time.time * moveSpeed, 1.0f));
+            gameObject.transform.position = Vector3.Lerp(positionOneT.position, positionTwoT.position, Mathf.PingPong(Time.time * moveSpeed, 1.0f));
         }
     }
 
@@ -101,8 +107,8 @@ public class PlatformMovement : MonoBehaviour
         {
             if (shake)
             {
-                Vector3 shakeLeft = positionOne - new Vector3(0.08f, 0.0f, 0.0f);
-                Vector3 shakeRight = positionOne + new Vector3(0.08f, 0.0f, 0.0f);
+                Vector3 shakeLeft = positionOneT.position - new Vector3(0.08f, 0.0f, 0.0f);
+                Vector3 shakeRight = positionOneT.position + new Vector3(0.08f, 0.0f, 0.0f);
                 transform.position = Vector3.Lerp(shakeLeft, shakeRight, Mathf.PingPong(Time.time * moveSpeed * 10, 1.0f));
             }
         }
@@ -124,7 +130,7 @@ public class PlatformMovement : MonoBehaviour
             fall = false;
 
             fallSpeedIncrease = 0.0f;
-            transform.position = positionOne;
+            transform.position = positionOneT.position;
         }
     }
 

@@ -14,6 +14,7 @@ public class SeedScript : MonoBehaviour
     [SerializeField] string itemName;
 
     Vector3 startingPosition;
+    bool isAcquirable = false;
 
     void Awake()
     {
@@ -24,6 +25,7 @@ public class SeedScript : MonoBehaviour
     void Start()
     {
         startingPosition = transform.position;
+        StartCoroutine(SeedAcquirableDelay()); //Delays the state when this seed becomes acquirable by the player.
     }
     void Update()
     {
@@ -42,6 +44,10 @@ public class SeedScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider col)
     {
+        if (!isAcquirable) {
+            return;
+        }
+
         if (col.gameObject.tag == "Player")
         {
             invScreen.GetComponent<PlayerInventory>().CollectSeed(seedWorth);
@@ -51,4 +57,13 @@ public class SeedScript : MonoBehaviour
             }
         }
     }
+
+    //Delays the state when this seed becomes acquirable by the player. This is to prevent the player from acquiring seeds, that should be deleted, before they are deleted on saved game load.
+    //Fixes the bug where player can acquire seeds that shouldnt exist on saved game load. 
+    IEnumerator SeedAcquirableDelay() {
+        isAcquirable = false;
+        yield return new WaitForSeconds(0.4f);
+        isAcquirable = true;
+    }
+
 }

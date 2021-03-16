@@ -224,6 +224,7 @@ public class PlayerInventory : MonoBehaviour
         SeedCollected.text = playerSeeds.ToString();
         WinSeedCollected.text = playerSeeds.ToString();
     }
+
     private void FindTotalSeeds(){
         //Find all seeds in level by finding all "seed" tagged objects and adding up their total worth.
         foreach(GameObject _seed in GameObject.FindGameObjectsWithTag("Seed")){

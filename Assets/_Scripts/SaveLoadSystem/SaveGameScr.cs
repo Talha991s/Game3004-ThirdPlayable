@@ -196,28 +196,28 @@ public class SaveGameScr : MonoBehaviour{
         {
             Debug.LogWarning("[Warning] There are no pickups found in pickupsInLevel references.");
         }
-        
+
         //Save platform positions
-        //if (platformsInLevel.Length > 0) 
-        //{
-        //    newSaveData.platformCoords = new TransformLite[platformsInLevel.Length];
-        //    for (int platformIndex = 0; platformIndex < platformsInLevel.Length; platformIndex++) 
-        //    {
-        //        if (platformsInLevel[platformIndex]) 
-        //        {
-        //            newSaveData.platformCoords[platformIndex] = new TransformLite(platformsInLevel[platformIndex].position.x, platformsInLevel[platformIndex].position.y, platformsInLevel[platformIndex].position.z, platformsInLevel[platformIndex].rotation.x, platformsInLevel[platformIndex].rotation.y, platformsInLevel[platformIndex].rotation.z);
-        //        }
-        //        else 
-        //        {
-        //            Debug.LogWarning("[Warning] Platform reference in index is missing.");
-        //            newSaveData.platformCoords[platformIndex] = new TransformLite(0, 0, 0, 0, 0, 0);
-        //        }
-        //    }
-        //}
-        //else 
-        //{
-        //    Debug.LogWarning("[Warning] There are no platforms found in platformsInLevel references.");
-        //}
+        if (platformsInLevel.Length > 0) 
+        {
+            newSaveData.platformCoords = new TransformLite[platformsInLevel.Length];
+            for (int platformIndex = 0; platformIndex < platformsInLevel.Length; platformIndex++) 
+            {
+                if (platformsInLevel[platformIndex]) 
+                {
+                    newSaveData.platformCoords[platformIndex] = new TransformLite(platformsInLevel[platformIndex].position.x, platformsInLevel[platformIndex].position.y, platformsInLevel[platformIndex].position.z, platformsInLevel[platformIndex].eulerAngles.x, platformsInLevel[platformIndex].eulerAngles.y, platformsInLevel[platformIndex].eulerAngles.z);
+                }
+                else 
+                {
+                    Debug.LogWarning("[Warning] Platform reference in index is missing.");
+                    newSaveData.platformCoords[platformIndex] = new TransformLite(0, 0, 0, 0, 0, 0);
+                }
+            }
+        }
+        else 
+        {
+            Debug.LogWarning("[Warning] There are no platforms found in platformsInLevel references.");
+        }
 
         //TEMP settings
         newSaveData.livesAmount = 3;
@@ -316,20 +316,20 @@ public class SaveGameScr : MonoBehaviour{
         }
 
         //Load Platform positions
-        //if (LoadedSaveFile.loadedSaveData.platformCoords.Length > 0) 
-        //{
-        //    for (int i = 0; i < platformsInLevel.Length; i++) 
-        //    {
-        //        platformsInLevel[i].position = new Vector3(LoadedSaveFile.loadedSaveData.platformCoords[i].positionX, LoadedSaveFile.loadedSaveData.platformCoords[i].positionY, LoadedSaveFile.loadedSaveData.platformCoords[i].positionZ);
-        //        platformsInLevel[i].eulerAngles = new Vector3(LoadedSaveFile.loadedSaveData.platformCoords[i].orientationX, LoadedSaveFile.loadedSaveData.platformCoords[i].orientationY, LoadedSaveFile.loadedSaveData.platformCoords[i].orientationZ);
-        //    }
-        //}
-        //else 
-        //{
-        //    Debug.LogWarning("[Warning] No platform postional data in save file.");
-        //}
+        if (LoadedSaveFile.loadedSaveData.platformCoords.Length > 0) 
+        {
+            for (int i = 0; i < platformsInLevel.Length; i++) 
+            {
+                platformsInLevel[i].position = new Vector3(LoadedSaveFile.loadedSaveData.platformCoords[i].positionX, LoadedSaveFile.loadedSaveData.platformCoords[i].positionY, LoadedSaveFile.loadedSaveData.platformCoords[i].positionZ);
+                platformsInLevel[i].eulerAngles = new Vector3(LoadedSaveFile.loadedSaveData.platformCoords[i].orientationX, LoadedSaveFile.loadedSaveData.platformCoords[i].orientationY, LoadedSaveFile.loadedSaveData.platformCoords[i].orientationZ);
+            }
+        }
+        else 
+        {
+            Debug.LogWarning("[Warning] No platform postional data in save file.");
+        }
 
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.6f);
         Time.timeScale = 1;
     }
 }
