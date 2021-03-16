@@ -1,6 +1,6 @@
 /*  Author: Joseph Malibiran
  *  Date Created: March 13, 2021
- *  Last Updated: March 13, 2021
+ *  Last Updated: March 16, 2021
  *  Description: 
  */
 
@@ -20,12 +20,13 @@ public class SaveGameScr : MonoBehaviour{
     [SerializeField] private Text[] saveSlots = new Text[4];
     [SerializeField] private Transform[] pickupsInLevel;
     [SerializeField] private Transform[] platformsInLevel;
+    [SerializeField] private Transform[] mobsInLevel;
 
     [Header("Settings")]
     [SerializeField] private string savefileName = "Hamstronaut";       //This is the name of the save file. An indexing number will be appended to this name. This is different from the save file header seen in-game.
     [SerializeField] private int levelNumber = 1;                       //TODO: Verify it is the same level
     private string[] saveFileDisplayHeaders;                            //This game will have a maximum 4 save slots hardcoded.
-    private string gameVersion = "0.3b";
+    private string gameVersion = "0.3c";
 
     private void Awake() 
     {
@@ -219,6 +220,28 @@ public class SaveGameScr : MonoBehaviour{
             Debug.LogWarning("[Warning] There are no platforms found in platformsInLevel references.");
         }
 
+        //Save mob positions
+        if (mobsInLevel.Length > 0) 
+        {
+            newSaveData.mobCoords = new TransformLite[mobsInLevel.Length];
+            newSaveData.mobsExist = new bool[mobsInLevel.Length];
+            for (int i = 0; i < mobsInLevel.Length; i++) 
+            {
+                if (mobsInLevel[i]) {
+                    newSaveData.mobsExist[i] = true;
+                    newSaveData.mobCoords[i] = new TransformLite(mobsInLevel[i].position.x, mobsInLevel[i].position.y, mobsInLevel[i].position.z, mobsInLevel[i].eulerAngles.x, mobsInLevel[i].eulerAngles.y, mobsInLevel[i].eulerAngles.z);
+                }
+                else {
+                    newSaveData.mobsExist[i] = false;
+                    newSaveData.mobCoords[i] = new TransformLite(0, 0, 0, 0, 0, 0);
+                }
+            }
+        }
+        else 
+        {
+            Debug.LogWarning("[Warning] There are no mobs found in platformsInLevel references.");
+        }
+
         //TEMP settings
         newSaveData.livesAmount = 3;
         newSaveData.ammoAmount = 100;
@@ -327,6 +350,27 @@ public class SaveGameScr : MonoBehaviour{
         else 
         {
             Debug.LogWarning("[Warning] No platform postional data in save file.");
+        }
+
+        //Load Enemy positions
+        if (LoadedSaveFile.loadedSaveData.mobCoords.Length > 0) 
+        {
+            for (int i = 0; i < mobsInLevel.Length; i++) 
+            {
+                if (LoadedSaveFile.loadedSaveData.mobsExist[i] && mobsInLevel[i]) 
+                {
+                    mobsInLevel[i].position = new Vector3(LoadedSaveFile.loadedSaveData.mobCoords[i].positionX, LoadedSaveFile.loadedSaveData.mobCoords[i].positionY, LoadedSaveFile.loadedSaveData.mobCoords[i].positionZ);
+                    mobsInLevel[i].eulerAngles = new Vector3(LoadedSaveFile.loadedSaveData.mobCoords[i].orientationX, LoadedSaveFile.loadedSaveData.mobCoords[i].orientationY, LoadedSaveFile.loadedSaveData.mobCoords[i].orientationZ);
+                }
+                else if (!LoadedSaveFile.loadedSaveData.mobsExist[i] && mobsInLevel[i])
+                {
+                    Destroy(mobsInLevel[i].gameObject);
+                }
+                else if (LoadedSaveFile.loadedSaveData.mobsExist[i] && !mobsInLevel[i]) 
+                {
+                    Debug.LogError("[Error] Mob exists in save file, but not in level.");
+                }
+            }
         }
 
         yield return new WaitForSeconds(0.6f);

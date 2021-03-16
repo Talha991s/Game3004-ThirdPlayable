@@ -1,6 +1,6 @@
 /*  Author: Salick Talhah; Edited by Tyler McMillan, Joseph Malibiran
  *  Date Created: February 14, 2021
- *  Last Updated: March 13, 2021
+ *  Last Updated: March 16, 2021
  *  Description: This script is used to control the damage and amount of health, load the game over screen and check collision with hazard.
  */
 
@@ -16,6 +16,7 @@ public class PlayerHealth : MonoBehaviour
     public int maxhealth = 100;
     public int currentHealth = 100;
     public HealthBar healthBar;
+    private bool isInvulnerable = true;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +34,8 @@ public class PlayerHealth : MonoBehaviour
         //Note: The lines below are commented out because it will interfere in the scenario where we will be loading a health amount from a save file.
         //currentHealth = maxhealth;
         //healthBar.SetMaxHealth(maxhealth);
+
+        StartCoroutine(GameStartInvulnerability()); //Briefly disables character collision at game start.
     }
 
     // Update is called once per frame
@@ -76,6 +79,10 @@ public class PlayerHealth : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
+        if (isInvulnerable) {
+            return;
+        }
+
         if (collision.gameObject.CompareTag("Enemy"))
         {
             FindObjectOfType<SoundManager>().Play("Attacked");
@@ -122,4 +129,10 @@ public class PlayerHealth : MonoBehaviour
         healthBar.SetHealth(currentHealth);
     }
 
+    //Briefly disables character collision at game start. This is to prevent errors when player decides to load a game where the player character is already colliding with an enemy.
+    IEnumerator GameStartInvulnerability() {
+        isInvulnerable = true;
+        yield return new WaitForSeconds(0.4f);
+        isInvulnerable = false;
+    }
 }

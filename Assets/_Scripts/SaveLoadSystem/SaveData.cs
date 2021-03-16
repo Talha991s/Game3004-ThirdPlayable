@@ -1,6 +1,6 @@
 /*  Author: Joseph Malibiran
  *  Date Created: January 28, 2021
- *  Last Updated: January 28, 2021
+ *  Last Updated: March 16, 2021
  *  Description: This class holds all the loaded data of a save file. Game data must be converted to this format before writing to save files. 
  *  And Save files must be converted to this data before being used by the game. Note: This class cannot use Unity's Vector3.
  */
@@ -13,15 +13,13 @@ using System.Collections.Generic;
 public class SaveData 
 {
     public TransformLite[] platformCoords;   //Note: Not set in constructor; Count must be checked before use
+    public TransformLite[] mobCoords;
     public int[] playerInventory;
-    public string savefileHeader;           //The save file header seen in-game view. This is different from the save file name.
+    public string savefileHeader;            //The save file header seen in-game view. This is different from the save file name.
     public string gameVersion;
     public TransformLite playerCoord;
-    public bool[] levelPickUps;             //Note: Not set in constructor; Count must be checked before use
-
-    //Note: Count must be checked before use
-    //public TransformLite[] mobCoord;
-    //public TransformLite[] pickupCoord;
+    public bool[] levelPickUps;              //Note: Not set in constructor; Count must be checked before use
+    public bool[] mobsExist;                 //Note: Not set in constructor; Count must be checked before use
 
     public int healthAmount;
     public int livesAmount;

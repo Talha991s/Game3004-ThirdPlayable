@@ -1,6 +1,6 @@
-/*  Author: Tyler McMillan
+/*  Author: Tyler McMillan, edited by Joseph Malibiran
  *  Date Created: February 6, 2021
- *  Last Updated: February 6, 2021
+ *  Last Updated: March 16, 2021
  *  Description: This script is a trigger for the seed to be collected
  */
 using System.Collections;
