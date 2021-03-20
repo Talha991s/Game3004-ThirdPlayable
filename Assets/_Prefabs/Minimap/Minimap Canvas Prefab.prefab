@@ -397,6 +397,8 @@ MonoBehaviour:
   registeredEnemyRefs:
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   registeredPickupRefs:
   - {fileID: 0}
   - {fileID: 0}
