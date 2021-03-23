@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 401302358}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.438, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4268597916284530}
@@ -254,12 +254,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bullet: {fileID: 349998351260724643, guid: 432c89d68066680478e483b1e66c1b64, type: 3}
+  camController: {fileID: 0}
+  cam: {fileID: 0}
   speed: 5
+  camSpeed: 30
   jumpForce: 300
-  joystick: {fileID: 0}
+  moveStick: {fileID: 0}
+  camStick: {fileID: 0}
   rb: {fileID: 0}
   grounded: 0
   sensitivity: 0.1
+  moveJoyDir: {x: 0, y: 0, z: 0}
+  camJoyDir: {x: 0, y: 0, z: 0}
   turnSmoothVelocity: 0
   turnSmoothTime: 0.1
   angle: 0

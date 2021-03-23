@@ -6,22 +6,25 @@ using UnityEngine.UI;
 public class PlayerMovement : MonoBehaviour
 {
     public GameObject bullet;
-    public Transform cam;
+    public GameObject camController;
+    public Camera cam;
     // running speed
     public float speed;
+    // Camera speed
+    public float camSpeed = 20;
     // jumping power
     public float jumpForce;
-    // aiming Speed
-    public float camSpeed = 10;
 
     // joystic object
     public Joystick moveStick;
+    public Joystick camStick;
 
     public Rigidbody rb;
     public bool grounded;
     public float sensitivity;
     
-    public Vector3 joyDir;
+    public Vector3 moveJoyDir;
+    public Vector3 camJoyDir;
 
     float hor;
     float vert;
@@ -47,6 +50,8 @@ public class PlayerMovement : MonoBehaviour
         // FindObjectOfType<SoundManager>().Play("Theme");
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+        camController.GetComponent<Cinemachine.CinemachineFreeLook>().m_XAxis.m_InputAxisValue = camJoyDir.x;
+        camController.GetComponent<Cinemachine.CinemachineFreeLook>().m_YAxis.m_InputAxisValue = camJoyDir.y;
     }
     
     void Update()
@@ -130,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
             vert = 0;
         }
 
-        joyDir = new Vector3(hor, 0, vert);
+        moveJoyDir = new Vector3(hor, 0, vert);
 
         float smoothedAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, angle, ref turnSmoothVelocity, turnSmoothTime);
         transform.rotation = Quaternion.Euler(0, smoothedAngle, 0);
@@ -151,24 +156,24 @@ public class PlayerMovement : MonoBehaviour
 
     void ControlsMobile()
     {
-        joyDir = new Vector3(moveStick.Horizontal, 0 ,moveStick.Vertical).normalized;
+        moveJoyDir = new Vector3(moveStick.Horizontal, 0 ,moveStick.Vertical).normalized;
 
-        if (joyDir.magnitude >= sensitivity)
+        if (moveJoyDir.magnitude >= sensitivity)
         {
             anim.SetInteger("AnimationPar", 1);
-            float targetAngle = Mathf.Atan2(joyDir.x, joyDir.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+            float targetAngle = Mathf.Atan2(moveJoyDir.x, moveJoyDir.z) * Mathf.Rad2Deg + cam.transform.eulerAngles.y;
             angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
             transform.rotation = Quaternion.Euler(0, angle, 0);
 
             Vector3 moveDir = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
             transform.position += moveDir.normalized * speed * Time.deltaTime;
-
-            
         }
         else
         {
             anim.SetInteger("AnimationPar", 0);
         }
+            
+
 
     }
 
