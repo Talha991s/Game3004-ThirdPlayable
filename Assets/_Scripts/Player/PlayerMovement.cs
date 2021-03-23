@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public GameObject bullet;
+
     // running speed
     public float speed;
     // jumping power
@@ -12,18 +14,18 @@ public class PlayerMovement : MonoBehaviour
 
     // joystic object
     public Joystick joystick;
-    public float sensitivity;
 
     public Rigidbody rb;
     public bool grounded;
-    
+    public float sensitivity;
+
     
     Vector3 direction;
     float hor;
     float vert;
     public float turnSmoothVelocity;
     public float turnSmoothTime;
-    float angle;
+    public float angle;
     Animator anim;
     [SerializeField] bool isMoving;
 
@@ -45,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
     }
-
+    
     void Update()
     {
         if (controlSettings == ControlSettings.DESKTOP)
@@ -80,90 +82,7 @@ public class PlayerMovement : MonoBehaviour
             Jump();
         }
 
-        // Handles changes in direction
-        //if(Input.GetKeyDown(KeyCode.A))
-        //{
-        //    if (Input.GetKey(KeyCode.W))
-        //    {
-        //        angle += -45;
-        //    }
-        //    else if (Input.GetKey(KeyCode.S))
-        //    {
-        //        angle += -255;
-        //    }
-        //    else
-        //    {
-        //        angle += -90;
-        //    }
-        //}
-        //if (Input.GetKeyDown(KeyCode.D))
-        //{
-        //    if (Input.GetKey(KeyCode.W))
-        //    {
-        //        angle += 45;
-        //    }
-        //    else if (Input.GetKey(KeyCode.S))
-        //    {
-        //        angle += 255;
-        //    }
-        //    else
-        //    {
-        //        angle += 90;
-        //    }
-        //}
-        //if (Input.GetKeyDown(KeyCode.W))
-        //{
-        //    angle += 0;
-        //}
-        //if (Input.GetKeyDown(KeyCode.S))
-        //{
-        //    angle += 180;
-        //}
-
-        //// Side to Side Movemnt
-        //if (Input.GetKey(KeyCode.A))
-        //{
-
-        //    hor = -1;
-        //}
-        //else if (Input.GetKey(KeyCode.D))
-        //{
-        //    hor = 1;
-        //}
-        //else
-        //{
-        //    hor = 0;
-        //}
-
-        //// Forward and Back movement
-        //if (Input.GetKey(KeyCode.W))
-        //{
-        //    vert = 1;
-        //}
-        //else if (Input.GetKey(KeyCode.S))
-        //{
-        //    vert = -1;
-        //}
-        //else
-        //{
-        //    vert = 0;
-        //}
-
-        //direction = new Vector3(hor, 0, vert);
-
-        //if (direction.magnitude > sensitivity)
-        //{
-        //    anim.SetInteger("AnimationPar", 1);
-        //    float smoothedAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, angle, ref turnSmoothVelocity, turnSmoothTime);
-        //    transform.rotation = Quaternion.Euler(0, smoothedAngle, 0);
-
-        //    Vector3 moveDir = Quaternion.Euler(0, angle, 0) * Vector3.forward;
-        //    transform.position += moveDir * speed * Time.deltaTime;
-        //}
-        //else
-        //{
-        //    anim.SetInteger("AnimationPar", 0);
-        //}
+   
 
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S))
         {
@@ -231,17 +150,33 @@ public class PlayerMovement : MonoBehaviour
 
     void ControlsMobile()
     {
-        direction = new Vector3(joystick.Horizontal, 0, joystick.Vertical).normalized;
+        Vector2 dir = new Vector2(joystick.Horizontal, joystick.Vertical).normalized;
 
-        if (joystick.Direction.magnitude > sensitivity)
+
+        if (dir.magnitude >= sensitivity)
         {
-
-            
-
-            Vector3 moveDir = Quaternion.Euler(0, angle, 0) * Vector3.forward;
-            transform.position += moveDir.normalized * speed * Time.deltaTime;
-            
+            anim.SetInteger("AnimationPar", 1);
+            angle = Mathf.Atan2(dir.x, dir.y) * 180 / Mathf.PI;
+            float smoothedAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, angle, ref turnSmoothVelocity, turnSmoothTime);
+            transform.rotation = Quaternion.Euler(0, smoothedAngle, 0);
+            transform.position += transform.forward * speed * Time.deltaTime;
         }
+        else
+        {
+            anim.SetInteger("AnimationPar", 0);
+        }
+
+
+       
+
+    }
+
+    public void Shoot()
+    {
+        anim.SetTrigger("Shoot");
+        Vector3 offset = transform.forward * 0.3f;
+        GameObject b = Instantiate(bullet, transform.position + offset, new Quaternion(0, 0, 0, 0));
+        b.GetComponent<LazerScript>().direction = transform.forward;
     }
 
     public void Jump()

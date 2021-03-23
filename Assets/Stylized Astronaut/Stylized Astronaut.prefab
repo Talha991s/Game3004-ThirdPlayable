@@ -168,7 +168,6 @@ GameObject:
   - component: {fileID: 189987542664706665}
   - component: {fileID: 823475507}
   - component: {fileID: 823475512}
-  - component: {fileID: 582244656}
   m_Layer: 8
   m_Name: Stylized Astronaut
   m_TagString: Player
@@ -254,16 +253,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0739cfcef0cba484ba4811896b82442f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bullet: {fileID: 349998351260724643, guid: 432c89d68066680478e483b1e66c1b64, type: 3}
   speed: 5
   jumpForce: 300
   joystick: {fileID: 0}
-  sensitivity: 0
   rb: {fileID: 0}
   grounded: 0
+  sensitivity: 0.1
   turnSmoothVelocity: 0
   turnSmoothTime: 0.1
+  angle: 0
   isMoving: 0
-  controlSettings: 0
+  controlSettings: 1
   inventory: 0
 --- !u!114 &823475507
 MonoBehaviour:
@@ -295,19 +296,6 @@ MonoBehaviour:
   maxhealth: 100
   currentHealth: 0
   healthBar: {fileID: 0}
---- !u!114 &582244656
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1147752367711628}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b11119834a0d87440a5d07349d330965, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bullet: {fileID: 349998351260724643, guid: 432c89d68066680478e483b1e66c1b64, type: 3}
 --- !u!1 &1158021920011488
 GameObject:
   m_ObjectHideFlags: 0
