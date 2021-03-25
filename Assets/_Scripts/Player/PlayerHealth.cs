@@ -11,12 +11,17 @@ using System;
 
 public class PlayerHealth : MonoBehaviour
 {
+    public Quest quest;
+
     [SerializeField] private GameObject gameover;
     [SerializeField] private GameObject win;
     public int maxhealth = 100;
     public int currentHealth = 100;
     public HealthBar healthBar;
+    //private QuestGiver open;
     private bool isInvulnerable = true;
+
+    public GameObject QuestScreen;
 
     // Start is called before the first frame update
     void Start()
@@ -63,6 +68,12 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+
+        if (other.gameObject.CompareTag("QuestTrigger"))
+        {
+            FindObjectOfType<QuestGiver>().QuestWindowOpen();
+        }
+
         if (other.gameObject.CompareTag("Hazard"))
         {
             TakeDamage(20);
