@@ -1,3 +1,9 @@
+
+//Script By: Amber Thompson
+//Edited By: 
+//Date Created : Feburary 9th, 2021
+//Date Edited : March 25th, 2021
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,12 +19,12 @@ public class PA_Warrior : MonoBehaviour
     public LayerMask GroundDetection, PlayerDetection; //Whats ground and whats player. 
     bool IsPointSet; // is the new walking position set?
     public Vector3 PointSet;  // New walking position to go to.
-     public float ATKStall; //How long between attacks.
+    public float ATKStall; //How long between attacks.
     bool ATKCooldown; //Has Already attacked, chill out!
     private Animator anim;
     public float PointRange; // How far new walking point can be. (Keep Reasonable)
     bool isATKStall;  // Has the enemy attacked yet if able to?, 
-    
+
 
     public float AggroRange;  // Distance of aggro, detection.
     public float CombatDistance; // How far it can swing.
@@ -34,7 +40,7 @@ public class PA_Warrior : MonoBehaviour
     [SerializeField] GameObject bullet;
 
     private Vector3 spawnPoint;
-                                           
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,9 +52,9 @@ public class PA_Warrior : MonoBehaviour
         player = GameObject.Find("Stylized Astronaut").transform;
         NavAgent = GetComponent<NavMeshAgent>();
         spawnPoint = transform.position;
-        if(IsDrone){
-           redDot = GameObject.Find("RedDot");
-           barrel = GameObject.Find("Barrel");
+        if (IsDrone) {
+            redDot = GameObject.Find("RedDot");
+            barrel = GameObject.Find("Barrel");
         }
 
     }
@@ -58,8 +64,8 @@ public class PA_Warrior : MonoBehaviour
         IsAggro = Physics.CheckSphere(transform.position, AggroRange, PlayerDetection);
         IsCombatDistance = Physics.CheckSphere(transform.position, CombatDistance, PlayerDetection);
 
-        if(!IsDrone){
-             if (!IsAggro && !IsCombatDistance)
+        if (!IsDrone) {
+            if (!IsAggro && !IsCombatDistance)
             {
                 Patrol();
             }
@@ -76,10 +82,10 @@ public class PA_Warrior : MonoBehaviour
             {
                 anim.SetBool("Attack", false);
             }
-        }else if(IsDrone){
+        } else if (IsDrone) {
             DroneAI();
         }
-       
+
     }
     private void ResetAttack()
     {
@@ -101,7 +107,14 @@ public class PA_Warrior : MonoBehaviour
         }
 
     }
-    private void SearchWalkPoint()
+    private void OnCollisionEnter(Collision collision) { 
+    if (collision.gameObject.CompareTag("Player"))
+        {
+            FindObjectOfType<SoundManager>().Play("Attacked");
+          
+}
+}
+private void SearchWalkPoint()
     {
         
         float RandposX = Random.Range(-PointRange, PointRange);

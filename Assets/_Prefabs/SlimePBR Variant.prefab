@@ -73,11 +73,16 @@ MonoBehaviour:
     m_Bits: 256
   PointSet: {x: 0, y: 0, z: 0}
   ATKStall: 2
-  PointRange: 2
+  PointRange: 5
   AggroRange: 4
   CombatDistance: 1
   IsAggro: 0
   IsCombatDistance: 0
+  IsDrone: 0
+  isMoving: 0
+  leftWing: {fileID: 0}
+  rightWing: {fileID: 0}
+  bullet: {fileID: 0}
 --- !u!114 &2031776316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,7 +108,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1919012471076396, guid: 55776efecb0cd134ea5f418c2f97a705, type: 3}
       propertyPath: m_Name
-      value: Enemy Type3
+      value: SlimePBR Variant
       objectReference: {fileID: 0}
     - target: {fileID: 1919012471076396, guid: 55776efecb0cd134ea5f418c2f97a705, type: 3}
       propertyPath: m_TagString
