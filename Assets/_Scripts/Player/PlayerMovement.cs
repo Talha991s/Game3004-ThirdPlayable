@@ -6,12 +6,15 @@ using UnityEngine.UI;
 public class PlayerMovement : MonoBehaviour
 {
     public GameObject bullet;
-    public GameObject camController;
+    public Cinemachine.CinemachineVirtualCamera camController;
+    public Transform lockOn;
     public Camera cam;
     // running speed
     public float speed;
     // Camera speed
     public float camSpeed = 20;
+    public Vector3 camOffset;
+
     // jumping power
     public float jumpForce;
 
@@ -23,8 +26,7 @@ public class PlayerMovement : MonoBehaviour
     public bool grounded;
     public float sensitivity;
     
-    public Vector3 moveJoyDir;
-    public Vector3 camJoyDir;
+    Vector3 moveJoyDir;
 
     float hor;
     float vert;
@@ -47,15 +49,15 @@ public class PlayerMovement : MonoBehaviour
     /// Events
     void Start()
     {
-        // FindObjectOfType<SoundManager>().Play("Theme");
+        
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
-        camController.GetComponent<Cinemachine.CinemachineFreeLook>().m_XAxis.m_InputAxisValue = camJoyDir.x;
-        camController.GetComponent<Cinemachine.CinemachineFreeLook>().m_YAxis.m_InputAxisValue = camJoyDir.y;
     }
     
     void Update()
     {
+        lockOn.position = transform.position;
+
         if (controlSettings == ControlSettings.DESKTOP)
         {
             Controls();
@@ -64,7 +66,9 @@ public class PlayerMovement : MonoBehaviour
         {
             ControlsMobile();
         }
+
     }
+
 
     void Controls()
     {
@@ -158,6 +162,7 @@ public class PlayerMovement : MonoBehaviour
     {
         moveJoyDir = new Vector3(moveStick.Horizontal, 0 ,moveStick.Vertical).normalized;
 
+
         if (moveJoyDir.magnitude >= sensitivity)
         {
             anim.SetInteger("AnimationPar", 1);
@@ -167,13 +172,21 @@ public class PlayerMovement : MonoBehaviour
 
             Vector3 moveDir = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
             transform.position += moveDir.normalized * speed * Time.deltaTime;
+            
         }
         else
         {
             anim.SetInteger("AnimationPar", 0);
         }
             
-
+        if(camStick.Horizontal >= sensitivity)
+        {
+            lockOn.transform.Rotate(0, camSpeed * Time.deltaTime, 0);
+        }
+        else if(camStick.Horizontal <= -sensitivity)
+        {
+            lockOn.transform.Rotate(0, -camSpeed * Time.deltaTime, 0);
+        }
 
     }
 
@@ -187,6 +200,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Jump()
     {
+
         if (grounded)
         {
             rb.AddForce(new Vector3(0, jumpForce, 0));
