@@ -1,4 +1,4 @@
-/*  Author: Salick Talhah; Edited by Tyler McMillan, Joseph Malibiran
+/*  Author: Salick Talhah; Edited by Tyler McMillan, Joseph Malibiran, Amber Thompson
  *  Date Created: February 14, 2021
  *  Last Updated: March 16, 2021
  *  Description: This script is used to control the damage and amount of health, load the game over screen and check collision with hazard.
@@ -20,9 +20,8 @@ public class PlayerHealth : MonoBehaviour
     public HealthBar healthBar;
     //private QuestGiver open;
     private bool isInvulnerable = true;
-
-    public GameObject QuestScreen;
-
+    public float DMGOverTime;     //How long IsCollisionStay needs to reach to increment a single damage tick. - Amber
+    public float IsCollisionStay;  //How Long The player is in the hitbox to be damaged. -Amber
     // Start is called before the first frame update
     void Start()
     {
@@ -88,14 +87,18 @@ public class PlayerHealth : MonoBehaviour
         }
 
     }
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)  //On Collision Enter didn't work to do damage incrementation, On collision stay was too fast. Damage now works by time.delta time inside stay -Amber
     {
         if (isInvulnerable) {
             return;
         }
-
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Enemy")){
+            IsCollisionStay += Time.deltaTime;
+        }
+        if (collision.gameObject.CompareTag("Enemy") && IsCollisionStay >= DMGOverTime) 
         {
+            
+            IsCollisionStay = 0;
             FindObjectOfType<SoundManager>().Play("Attacked");
             TakeDamage(5);
         }
