@@ -241,16 +241,10 @@ public class PlayerMovement : MonoBehaviour
             
            aBtn.transform.position = new Vector2(-aPos.x + Screen.width, aPos.y);
            bBtn.transform.position = new Vector2(-bPos.x + Screen.width, bPos.y);
-        }else{
-            aBtn.transform.position = aPos;
-            bBtn.transform.position = bPos;
         }
         if(GameObject.FindGameObjectWithTag("SoundManager").GetComponent<ControlManager>().IsMoveInvert()){
            joystickLeft.transform.position = JR;
            joystickRight.transform.position = JL;
-        }else{
-            joystickLeft.transform.position = JL;
-           joystickRight.transform.position = JR;
         }
     }
 }
