@@ -239,18 +239,18 @@ public class PlayerMovement : MonoBehaviour
         Vector2 JR = joystickRight.transform.position;
         if(GameObject.FindGameObjectWithTag("SoundManager").GetComponent<ControlManager>().IsJumpInvert()){
             
-           aBtn.transform.position = new Vector2(bPos.x,bPos.y);
-           bBtn.transform.position = new Vector2(aPos.x,aPos.y);
+           aBtn.transform.position = new Vector2(-aPos.x + Screen.width, aPos.y);
+           bBtn.transform.position = new Vector2(-bPos.x + Screen.width, bPos.y);
         }else{
-            aBtn.transform.position = new Vector2(aPos.x,aPos.y);
-            bBtn.transform.position = new Vector2(bPos.x,bPos.y);
+            aBtn.transform.position = aPos;
+            bBtn.transform.position = bPos;
         }
         if(GameObject.FindGameObjectWithTag("SoundManager").GetComponent<ControlManager>().IsMoveInvert()){
-           joystickLeft.transform.position = new Vector2(JR.x,JR.y);
-           joystickRight.transform.position = new Vector2(JL.x,JL.y);
+           joystickLeft.transform.position = JR;
+           joystickRight.transform.position = JL;
         }else{
-            joystickLeft.transform.position = new Vector2(JL.x,JL.y);
-           joystickRight.transform.position = new Vector2(JR.x,JR.y);
+            joystickLeft.transform.position = JL;
+           joystickRight.transform.position = JR;
         }
     }
 }
