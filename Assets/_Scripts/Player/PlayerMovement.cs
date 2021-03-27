@@ -52,6 +52,7 @@ public class PlayerMovement : MonoBehaviour
         
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+        InvertControls();
     }
     
     void Update()
@@ -224,6 +225,32 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Platform"))
         {
             grounded = true;
+        }
+    }
+
+    void InvertControls(){
+        GameObject aBtn = GameObject.Find("A_Btn");
+        GameObject bBtn = GameObject.Find("B_Btn");
+        GameObject joystickLeft = GameObject.Find("Joystick Left");
+        GameObject joystickRight = GameObject.Find("Joystick Right");
+        Vector2 aPos = aBtn.transform.position;
+        Vector2 bPos = bBtn.transform.position;
+        Vector2 JL = joystickLeft.transform.position;
+        Vector2 JR = joystickRight.transform.position;
+        if(GameObject.FindGameObjectWithTag("SoundManager").GetComponent<ControlManager>().IsJumpInvert()){
+            
+           aBtn.transform.position = new Vector2(bPos.x,bPos.y);
+           bBtn.transform.position = new Vector2(aPos.x,aPos.y);
+        }else{
+            aBtn.transform.position = new Vector2(aPos.x,aPos.y);
+            bBtn.transform.position = new Vector2(bPos.x,bPos.y);
+        }
+        if(GameObject.FindGameObjectWithTag("SoundManager").GetComponent<ControlManager>().IsMoveInvert()){
+           joystickLeft.transform.position = new Vector2(JR.x,JR.y);
+           joystickRight.transform.position = new Vector2(JL.x,JL.y);
+        }else{
+            joystickLeft.transform.position = new Vector2(JL.x,JL.y);
+           joystickRight.transform.position = new Vector2(JR.x,JR.y);
         }
     }
 }
