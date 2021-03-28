@@ -5,19 +5,17 @@ using TMPro;
 
 public class Gold : MonoBehaviour
 {
-    //public static
-    private QuestGoal CollectedQuestGold;
-    // public QuestGoal totalQuestGoal;
-    [SerializeField] private TMP_Text goldtext;
-   // [SerializeField] private TMP_Text Totalgoldtext;
-
     public Quest quest;
-
+    //private QuestGoal CollectedQuestGold;
+    
+    [SerializeField] private TMP_Text goldtext;
+  
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Goal"))
         {
             CollectGoal();
+            Destroy(other.gameObject);
         }
     }
 
@@ -25,25 +23,20 @@ public class Gold : MonoBehaviour
     {
         if (quest.IsActive)
         {
-            var goldCollected = CollectedQuestGold.CollectedGold;
-            goldCollected++;
+
+            var goldCollected = quest.GoldenCoinCollected;
+            goldCollected+=1;
+            quest.GoldenCoinCollected += 1;
             goldtext.text = goldCollected.ToString();
             FindObjectOfType<SoundManager>().Play("collect");
-            Destroy(gameObject);
+            
 
-            if (quest.goal.IsReached())
+            if (quest.goal.IsReached() || quest.GoldenCoinCollected ==10)
             {
                 quest.Complete();
+                Destroy(GameObject.FindWithTag("Door"));
             }
         }
     }
 
-    public void OnAcceptPressed()
-    {
-        //FindObjectOfType<SoundManager>().Play("click");
-        // QuestScreen.SetActive(false);
-        quest.IsActive = true;
-        //quuuest.quest.IsActive = true;
-        //player.quest = quest;
-    }
 }

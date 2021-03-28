@@ -9,7 +9,7 @@ public class QuestGiver : MonoBehaviour
 {
     public Quest quest;
     public static bool IsQuestWindowOpen;
-   public PlayerHealth player;
+    public Gold player;
     //public GameObject player;
     public GameObject QuestScreen;
     public GameObject QuestTrigger;
@@ -17,11 +17,6 @@ public class QuestGiver : MonoBehaviour
     [Header("Text")]
     public TMP_Text TitleText;
     public TMP_Text descriptionText;
-    // public TMP_Text coinText;
-    //private Gold quuuest;
-    //public QuestGoal CollectedQuestGold;
-    //// public QuestGoal totalQuestGoal;
-    //[SerializeField] private TMP_Text goldtext;
 
     public void QuestWindowOpen()
     {
@@ -29,7 +24,6 @@ public class QuestGiver : MonoBehaviour
         QuestScreen.SetActive(true);
         TitleText.text = quest.title;
         descriptionText.text = quest.Description;
-       // coinText.text = quest.GoldenCoinCollected.ToString();
     }
 
     public void OnAcceptPressed()

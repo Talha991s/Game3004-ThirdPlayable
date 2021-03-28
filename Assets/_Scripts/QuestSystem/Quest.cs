@@ -9,6 +9,7 @@ public class Quest
 
     public string title;
     public string Description;
+
     public int GoldenCoinCollected;
 
     public QuestGoal goal;

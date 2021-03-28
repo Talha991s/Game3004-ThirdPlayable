@@ -11,7 +11,7 @@ using System;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public Quest quest;
+    //public Quest quest;
 
     [SerializeField] private GameObject gameover;
     [SerializeField] private GameObject win;
@@ -154,4 +154,10 @@ public class PlayerHealth : MonoBehaviour
         yield return new WaitForSeconds(0.4f);
         isInvulnerable = false;
     }
+
+
+    //######################################################QUEST#########################################3
+
+
+    
 }
