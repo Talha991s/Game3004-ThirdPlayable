@@ -38,6 +38,8 @@ public class PlatformMovement : MonoBehaviour
     [SerializeField] float rotateSpeed = 1.0f;
     [SerializeField] float flipStart = 0.0f;
 
+    bool playerIsOnPlatform = false;
+
     bool hold = true;                   // First four currently unused, intended to control the pause for certain platforms
     float flipTimer = 2.5f;
     float holdPositionTimer = 5.0f;
@@ -140,7 +142,7 @@ public class PlatformMovement : MonoBehaviour
         {
             if (platformType != PlatformType.BASIC && platformType != PlatformType.FALLING)
             {
-               collision.gameObject.transform.SetParent(gameObject.transform);
+                collision.gameObject.transform.SetParent(gameObject.transform);
             }
 
             if (platformType == PlatformType.FALLING && !fall)
