@@ -67,6 +67,11 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //if (other.gameObject.CompareTag("Goal"))
+        //{
+        //    FindObjectOfType<QuestGiver>().CollectGoal();
+        //  //  Destroy();
+        //}
 
         if (other.gameObject.CompareTag("QuestTrigger"))
         {

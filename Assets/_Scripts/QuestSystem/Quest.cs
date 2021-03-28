@@ -12,4 +12,10 @@ public class Quest
     public int GoldenCoinCollected;
 
     public QuestGoal goal;
+
+    public void Complete()
+    {
+        IsActive = false;
+        Debug.Log(title + " was completed! ");
+    }
 }

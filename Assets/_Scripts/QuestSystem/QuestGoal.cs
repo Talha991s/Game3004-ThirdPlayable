@@ -8,13 +8,12 @@ public class QuestGoal
     public GoalType goaltype;
 
     public int CollectedGold;
-    public int TotalGold;
+    //public int TotalGold;
 
     public bool IsReached()
     {
-        return (CollectedGold >= TotalGold);
+        return (CollectedGold >= 10);
     }
-
 
 }
 

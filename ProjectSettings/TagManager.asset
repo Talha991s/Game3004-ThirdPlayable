@@ -17,6 +17,7 @@ TagManager:
   - EnemyBullet
   - QuestTrigger
   - SoundManager
+  - Goal
   layers:
   - Default
   - TransparentFX
