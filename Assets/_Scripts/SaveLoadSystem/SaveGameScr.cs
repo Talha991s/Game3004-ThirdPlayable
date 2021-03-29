@@ -1,6 +1,6 @@
 /*  Author: Joseph Malibiran
  *  Date Created: March 13, 2021
- *  Last Updated: March 16, 2021
+ *  Last Updated: March 29, 2021
  *  Description: 
  */
 
@@ -15,6 +15,7 @@ public class SaveGameScr : MonoBehaviour{
 
     [Header("References")]
     [SerializeField] private Transform playerCharacterRef;
+    [SerializeField] private QuestGiver questGiverRef;
     [SerializeField] private PlayerHealth playerHealthRef;
     [SerializeField] private PlayerInventory inventoryRef;
     [SerializeField] private Text[] saveSlots = new Text[4];
@@ -177,6 +178,13 @@ public class SaveGameScr : MonoBehaviour{
             Debug.LogError("[Error] Reference to inventory is missing!");
         }
 
+        if (questGiverRef) {
+            newSaveData.goldenSeedsCollected = questGiverRef.quest.GoldenCoinCollected;
+        }
+        else {
+            Debug.LogWarning("[Warning] Reference to quest system is missing!"); //TODO
+        }
+
         //Save current pickups in level
         if (pickupsInLevel.Length > 0) 
         {
@@ -281,6 +289,13 @@ public class SaveGameScr : MonoBehaviour{
         else 
         {
             Debug.LogError("[Error] Reference to player health is missing!");
+        }
+
+        if (questGiverRef) {
+            questGiverRef.quest.GoldenCoinCollected = LoadedSaveFile.loadedSaveData.goldenSeedsCollected;
+        }
+        else {
+            Debug.LogWarning("[Warning] Reference to quest system is missing!"); //TODO
         }
 
         //Set seed collected amount and inventory

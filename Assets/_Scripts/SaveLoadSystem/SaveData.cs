@@ -1,6 +1,6 @@
 /*  Author: Joseph Malibiran
  *  Date Created: January 28, 2021
- *  Last Updated: March 16, 2021
+ *  Last Updated: March 29, 2021
  *  Description: This class holds all the loaded data of a save file. Game data must be converted to this format before writing to save files. 
  *  And Save files must be converted to this data before being used by the game. Note: This class cannot use Unity's Vector3.
  */
@@ -25,6 +25,7 @@ public class SaveData
     public int livesAmount;
     public int ammoAmount;
     public int seedsCollected;
+    public int goldenSeedsCollected;
     public int aliensKilled;
     public int currentLevel; //0 means not in a level
     public int checkpoint;
@@ -50,6 +51,7 @@ public class SaveData
         livesAmount = 3;
         ammoAmount = 100;
         seedsCollected = 0;
+        goldenSeedsCollected = 0;
         aliensKilled = 0;
         currentLevel = 0; //0 means not in a level
         checkpoint = 1;
