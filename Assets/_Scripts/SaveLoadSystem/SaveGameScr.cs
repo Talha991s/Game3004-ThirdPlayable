@@ -18,6 +18,7 @@ public class SaveGameScr : MonoBehaviour{
     [SerializeField] private QuestGiver questGiverRef;
     [SerializeField] private PlayerHealth playerHealthRef;
     [SerializeField] private PlayerInventory inventoryRef;
+    [SerializeField] private RespawnLogic checkpointRef;
     [SerializeField] private Text[] saveSlots = new Text[4];
     [SerializeField] private Transform[] pickupsInLevel;
     [SerializeField] private Transform[] platformsInLevel;
@@ -27,7 +28,7 @@ public class SaveGameScr : MonoBehaviour{
     [SerializeField] private string savefileName = "Hamstronaut";       //This is the name of the save file. An indexing number will be appended to this name. This is different from the save file header seen in-game.
     [SerializeField] private int levelNumber = 1;                       //TODO: Verify it is the same level
     private string[] saveFileDisplayHeaders;                            //This game will have a maximum 4 save slots hardcoded.
-    private string gameVersion = "0.3c";
+    private string gameVersion = "0.4";
 
     private void Awake() 
     {
@@ -250,6 +251,16 @@ public class SaveGameScr : MonoBehaviour{
             Debug.LogWarning("[Warning] There are no mobs found in platformsInLevel references.");
         }
 
+        //Save Checkpoint position
+        if (checkpointRef) 
+        {
+            newSaveData.checkpointCoord = new TransformLite(checkpointRef.currentSpawnPoint.x, checkpointRef.currentSpawnPoint.y, checkpointRef.currentSpawnPoint.z, checkpointRef.currentSpawnPointRotation.x, checkpointRef.currentSpawnPointRotation.y, checkpointRef.currentSpawnPointRotation.z);
+        }
+        else 
+        {
+            Debug.LogWarning("[Warning] Reference to RespawnLogic.cs missing!");
+        }
+
         //TEMP settings
         newSaveData.livesAmount = 3;
         newSaveData.ammoAmount = 100;
@@ -386,6 +397,18 @@ public class SaveGameScr : MonoBehaviour{
                     Debug.LogError("[Error] Mob exists in save file, but not in level.");
                 }
             }
+        }
+
+        //Load Checkpoint position
+        if (checkpointRef) 
+        {
+            checkpointRef.oldSpawnPoint = checkpointRef.currentSpawnPoint;
+            checkpointRef.currentSpawnPoint = new Vector3(LoadedSaveFile.loadedSaveData.checkpointCoord.positionX, LoadedSaveFile.loadedSaveData.checkpointCoord.positionY, LoadedSaveFile.loadedSaveData.checkpointCoord.positionZ);
+            checkpointRef.currentSpawnPointRotation = new Vector3(LoadedSaveFile.loadedSaveData.checkpointCoord.orientationX, LoadedSaveFile.loadedSaveData.checkpointCoord.orientationY, LoadedSaveFile.loadedSaveData.checkpointCoord.orientationZ);
+        }
+        else 
+        {
+            Debug.LogWarning("[Warning] Reference to RespawnLogic.cs missing!");
         }
 
         yield return new WaitForSeconds(0.6f);

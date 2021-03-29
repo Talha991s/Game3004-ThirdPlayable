@@ -4,22 +4,20 @@ using UnityEngine;
 
 public class RespawnLogic : MonoBehaviour
 {
-    [SerializeField] GameObject currentSpawnPoint;
-    GameObject oldSpawnPoint;
+    //[SerializeField] GameObject currentSpawnPoint;
+    //GameObject oldSpawnPoint;
+
+    //Note: Used Vector3 instead of GameObject because it is easier to save/load from savefile
+    public Vector3 currentSpawnPoint;
+    public Vector3 currentSpawnPointRotation;
+    public Vector3 oldSpawnPoint;
 
     [SerializeField] Transform cameraTransform;
 
-   // public PlayerHealth health;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+    private void Awake() {
+        currentSpawnPoint = this.transform.position;
+        currentSpawnPointRotation = this.transform.localEulerAngles;
+        oldSpawnPoint = currentSpawnPoint;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -27,17 +25,21 @@ public class RespawnLogic : MonoBehaviour
         if (other.gameObject.CompareTag("Hazard"))
         {
             FindObjectOfType<SoundManager>().Play("Dying");   //this is the sound and was added by Salick for testing
-            transform.position = currentSpawnPoint.transform.position;
-            transform.rotation = currentSpawnPoint.transform.rotation;
+            //transform.position = currentSpawnPoint.transform.position;
+            //transform.rotation = currentSpawnPoint.transform.rotation;
+            transform.position = currentSpawnPoint;
+            transform.eulerAngles = currentSpawnPointRotation;
 
-            cameraTransform.transform.rotation = transform.rotation;
+            cameraTransform.transform.rotation = this.transform.rotation;
         }
 
         if (other.gameObject.CompareTag("Spawn"))
         {
             oldSpawnPoint = currentSpawnPoint;
-            currentSpawnPoint = other.gameObject;
-            oldSpawnPoint = null;
+            currentSpawnPoint = other.transform.position;
+            currentSpawnPointRotation = other.transform.eulerAngles;
+            //currentSpawnPoint = other.gameObject;
+            //oldSpawnPoint = null;
         }
     }
 }

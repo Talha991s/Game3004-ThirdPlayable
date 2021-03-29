@@ -18,6 +18,7 @@ public class SaveData
     public string savefileHeader;            //The save file header seen in-game view. This is different from the save file name.
     public string gameVersion;
     public TransformLite playerCoord;
+    public TransformLite checkpointCoord;
     public bool[] levelPickUps;              //Note: Not set in constructor; Count must be checked before use
     public bool[] mobsExist;                 //Note: Not set in constructor; Count must be checked before use
 
@@ -37,6 +38,7 @@ public class SaveData
         gameVersion = "undefined";
 
         playerCoord = new TransformLite(0, 0, 0, 0, 0, 0);
+        checkpointCoord = new TransformLite(0, 0, 0, 0, 0, 0);
 
         playerInventory = new int[8]; //0 = empty, 1 = seed, 2 = super seed
         playerInventory[0] = 0;

@@ -48,7 +48,7 @@ public class MinimapScr : MonoBehaviour
 
     private void Awake() 
     {
-        miniMapSize = Screen.height / 3;
+        miniMapSize = (Screen.height / 5) * 2;
         InsureCanvasExists();               //Insures that this object is within Canvas.
         ExtractCameraToRootHierarchy();     //Extract the Minimap Camera from within the prefab and unto the root of the scene hierarchy.
         ApplyMinimapLevelIcons();
