@@ -15,7 +15,9 @@ public class SaveGameScr : MonoBehaviour{
 
     [Header("References")]
     [SerializeField] private Transform playerCharacterRef;
+    [SerializeField] private Transform cameraRef;
     [SerializeField] private QuestGiver questGiverRef;
+    [SerializeField] private Gold goldGoalRef;
     [SerializeField] private PlayerHealth playerHealthRef;
     [SerializeField] private PlayerInventory inventoryRef;
     [SerializeField] private RespawnLogic checkpointRef;
@@ -179,11 +181,19 @@ public class SaveGameScr : MonoBehaviour{
             Debug.LogError("[Error] Reference to inventory is missing!");
         }
 
-        if (questGiverRef) {
-            newSaveData.goldenSeedsCollected = questGiverRef.quest.GoldenCoinCollected;
+        //Save Golden seed amount
+        //if (questGiverRef) {
+        //    newSaveData.goldenSeedsCollected = questGiverRef.quest.GoldenCoinCollected;
+        //}
+        //else {
+        //    Debug.LogWarning("[Warning] Reference to quest system is missing!"); //TODO
+        //}
+
+        if (goldGoalRef) {
+            newSaveData.goldenSeedsCollected = goldGoalRef.quest.GoldenCoinCollected;
         }
         else {
-            Debug.LogWarning("[Warning] Reference to quest system is missing!"); //TODO
+            Debug.LogWarning("[Warning] Reference to Gold.cs is missing!"); //TODO
         }
 
         //Save current pickups in level
@@ -267,7 +277,7 @@ public class SaveGameScr : MonoBehaviour{
         newSaveData.aliensKilled = 0;
         newSaveData.currentLevel = 1; //0 means not in a level
         newSaveData.levelsUnlocked = 1;
-        newSaveData.savefileHeader = "[Marco] Health: " + newSaveData.healthAmount + "; Seeds: " + newSaveData.seedsCollected + "; Levels Unlocked: " + newSaveData.levelsUnlocked;
+        newSaveData.savefileHeader = "[Marco] Health: " + newSaveData.healthAmount + "; Golden Seeds: " + newSaveData.goldenSeedsCollected + ";";
 
         SaveFileReaderWriter.WriteToSaveFile(Application.persistentDataPath + "/" + savefileName + _saveSlotIndex + ".hamsave", newSaveData);
 
@@ -292,6 +302,12 @@ public class SaveGameScr : MonoBehaviour{
             Debug.LogError("[Error] Reference to player character missing.");
         }
 
+        //Set up camera
+        if (cameraRef && playerCharacterRef) {
+            cameraRef.position = playerCharacterRef.position;
+            cameraRef.rotation = playerCharacterRef.rotation;
+        }
+
         //Set player health
         if (playerHealthRef) 
         {
@@ -302,11 +318,18 @@ public class SaveGameScr : MonoBehaviour{
             Debug.LogError("[Error] Reference to player health is missing!");
         }
 
+        //Set golden seeds collected
         if (questGiverRef) {
             questGiverRef.quest.GoldenCoinCollected = LoadedSaveFile.loadedSaveData.goldenSeedsCollected;
         }
         else {
             Debug.LogWarning("[Warning] Reference to quest system is missing!"); //TODO
+        }
+        if (goldGoalRef) {
+            goldGoalRef.SetGold(LoadedSaveFile.loadedSaveData.goldenSeedsCollected);
+        }
+        else {
+            Debug.LogWarning("[Warning] Reference to Gold.cs is missing!"); //TODO
         }
 
         //Set seed collected amount and inventory

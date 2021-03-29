@@ -42,4 +42,9 @@ public class Gold : MonoBehaviour
         }
     }
 
+    public void SetGold(int _set) {
+        quest.GoldenCoinCollected = _set;
+        goldtext.text = quest.GoldenCoinCollected.ToString();
+    }
+
 }
