@@ -8,9 +8,9 @@ public class RespawnLogic : MonoBehaviour
     //GameObject oldSpawnPoint;
 
     //Note: Used Vector3 instead of GameObject because it is easier to save/load from savefile
-    public Vector3 currentSpawnPoint;
-    public Vector3 currentSpawnPointRotation;
-    public Vector3 oldSpawnPoint;
+    [HideInInspector] public Vector3 currentSpawnPoint;
+    [HideInInspector] public Vector3 currentSpawnPointRotation;
+    [HideInInspector] public Vector3 oldSpawnPoint;
 
     [SerializeField] Transform cameraTransform;
 
