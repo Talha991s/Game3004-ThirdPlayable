@@ -9,32 +9,59 @@ public class BlinkingPlatform : MonoBehaviour
     public float initialBlinkTime;
     // Used as speed for blinking after offset
     public float finalBlinkTime;
+    // Used for certain ones that turn back on quickly
+    float quickBlinkTime = 0.35f;
+    float quickBlinkTimer;
+
+    public bool quickBlink = false;
 
     Vector3 startingScale;
+
+    bool one = true;
 
     // Start is called before the first frame update
     void Start()
     {
+        quickBlinkTimer = quickBlinkTime;
         startingScale = transform.localScale;
-        StartCoroutine(Countdown());
     }
 
     // Update is called once per frame
     void Update()
     {
         Blink();
+        Countdown();
     }
 
-    IEnumerator Countdown()
+    void Countdown()
     {
-        while(true)
+        if (one)
         {
-            yield return new WaitForSeconds(initialBlinkTime);
-            initialBlinkTime = finalBlinkTime;
-            isVisible = !isVisible;
+            initialBlinkTime -= Time.deltaTime;
+            if (initialBlinkTime <= 0)
+            {
+                initialBlinkTime = finalBlinkTime;
+                isVisible = !isVisible;
+                one = false;
+            }
+        }
+        if (quickBlink && !one)
+        {
+            quickBlinkTimer -= Time.deltaTime;
+            if (quickBlinkTimer <= 0)
+            {
+                quickBlinkTimer = quickBlinkTime;
+                isVisible = !isVisible;
+                one = true;
+            }
+        }
+        else if (!quickBlink)
+        {
+            one = true;
         }
     }
 
+   
     void Blink()
     {
         transform.localScale = isVisible ? startingScale : new Vector3(0, 0, 0);
