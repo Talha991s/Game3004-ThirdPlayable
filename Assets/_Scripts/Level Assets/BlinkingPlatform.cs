@@ -5,7 +5,10 @@ using UnityEngine;
 public class BlinkingPlatform : MonoBehaviour
 {
     public bool isVisible;
-    public float timeUntilBlink;
+    // Used as an offset
+    public float initialBlinkTime;
+    // Used as speed for blinking after offset
+    public float finalBlinkTime;
 
     Vector3 startingScale;
 
@@ -26,8 +29,8 @@ public class BlinkingPlatform : MonoBehaviour
     {
         while(true)
         {
-            yield return new WaitForSeconds(timeUntilBlink);
-
+            yield return new WaitForSeconds(initialBlinkTime);
+            initialBlinkTime = finalBlinkTime;
             isVisible = !isVisible;
         }
     }
