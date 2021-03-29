@@ -9,7 +9,9 @@ public class Gold : MonoBehaviour
     //private QuestGoal CollectedQuestGold;
     
     [SerializeField] private TMP_Text goldtext;
-  
+
+    [SerializeField] GameObject firstWinPlatform;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Goal"))
@@ -35,6 +37,7 @@ public class Gold : MonoBehaviour
             {
                 quest.Complete();
                 Destroy(GameObject.FindWithTag("Door"));
+                Destroy(firstWinPlatform);
             }
         }
     }
