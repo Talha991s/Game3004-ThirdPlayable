@@ -41,17 +41,4 @@ public class MainMenu : MonoBehaviour
     {
         FindObjectOfType<SoundManager>().Play("click");
     }
-    public void OnOptionClick()
-    {
-        FindObjectOfType<SoundManager>().Play("click");
-    }
-    public void QuestClick()
-    {
-        FindObjectOfType<SoundManager>().Play("click");
-    }
-
-    public void QuestClose()
-    {
-        FindObjectOfType<SoundManager>().Play("resume");
-    }
 }
